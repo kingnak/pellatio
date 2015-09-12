@@ -1,0 +1,54 @@
+#ifndef GAMEINTERFACE_H
+#define GAMEINTERFACE_H
+
+#include <QObject>
+#include <pellatiodefinitions.h>
+#include <QList>
+#include <data/fielddata.h>
+#include <data/piecedata.h>
+#include <data/movedata.h>
+
+class FieldModel;
+class PieceModel;
+class RotationModel;
+class ConfirmModel;
+class InfoModel;
+class PreviewModel;
+class AnimationModel;
+
+class GameInterface : public QObject
+{
+    Q_OBJECT
+public:
+    explicit GameInterface(QObject *parent = 0);
+
+    virtual void confirmMove() = 0;
+    virtual void resetMove() = 0;
+    virtual void select(PellatioDefinitions::FieldIndex idx) = 0;
+    virtual void rotateSelected(PellatioDefinitions::Rotation rot) = 0;
+
+    virtual PellatioDefinitions::Color thisPlayer() = 0;
+
+    FieldModel *fieldModel() { return m_fields; }
+    PieceModel * pieceModel() { return m_pieces; }
+    RotationModel *rotationModel() { return m_rotation; }
+    ConfirmModel *confirmModel() { return m_confim; }
+    InfoModel *infoModel() { return m_info; }
+    PreviewModel *previewModel() { return m_preview; }
+    AnimationModel *animationModel() { return m_anim; }
+
+    virtual void animateMove(MoveData move);
+    //virtual void updatePieces(QList<PieceData> pieces);
+
+
+protected:
+    FieldModel *m_fields;
+    PieceModel * m_pieces;
+    RotationModel *m_rotation;
+    ConfirmModel *m_confim;
+    InfoModel *m_info;
+    PreviewModel *m_preview;
+    AnimationModel *m_anim;
+};
+
+#endif // GAMEINTERFACE_H

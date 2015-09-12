@@ -1,0 +1,42 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2015-09-10T12:24:58
+#
+#-------------------------------------------------
+
+#QT       += network
+
+QT       -= gui
+
+TARGET = Pellatio_server
+TEMPLATE = lib
+
+DEFINES += PELLATIO_SERVER_LIBRARY
+
+SOURCES += gamecontroller.cpp \
+    board.cpp \
+    interactioncontroller.cpp \
+    piece.cpp \
+    field.cpp \
+    player.cpp
+
+HEADERS += gamecontroller.h\
+        pellatio_server_global.h \
+    board.h \
+    interactioncontroller.h \
+    piece.h \
+    field.h \
+    player.h
+
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Pellatio_common/release/ -lPellatio_common
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Pellatio_common/debug/ -lPellatio_common
+else:unix: LIBS += -L$$OUT_PWD/../Pellatio_common/ -lPellatio_common
+
+INCLUDEPATH += $$PWD/../Pellatio_common
+DEPENDPATH += $$PWD/../Pellatio_common

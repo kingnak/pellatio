@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Game.qml</file>
+        <file>Board.qml</file>
+        <file>Button.qml</file>
+        <file>images/button.png</file>
+        <file>Piece.qml</file>
+        <file>images/move.png</file>
+        <file>images/move2.png</file>
+        <file>MovePreview.qml</file>
+        <file>images/rot.png</file>
+        <file>images/ba.png</file>
+        <file>images/bp.png</file>
+        <file>images/ra.png</file>
+        <file>images/rp.png</file>
+        <file>images/bg.png</file>
+        <file>images/bk.png</file>
+        <file>images/rg.png</file>
+        <file>images/rk.png</file>
+        <file>ImageButton.qml</file>
+        <file>CheckBox.qml</file>
+    </qresource>
+</RCC>
