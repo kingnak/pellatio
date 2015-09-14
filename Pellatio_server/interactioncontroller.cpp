@@ -171,7 +171,8 @@ void InteractionController::updateFields()
             QList<PellatioDefinitions::MoveOffset> movable = p.getMovableFields();
             const int maxMove = p.moveCount() - m_move.getMoveLength();
             foreach (PellatioDefinitions::MoveOffset off, movable) {
-                for (int l = 1; l <= off.len && l <= maxMove; ++l) {
+                bool cont = true;
+                for (int l = 1; l <= off.len && l <= maxMove && cont; ++l) {
                     if (!canMove(l)) {
                         break;
                     }
@@ -180,18 +181,21 @@ void InteractionController::updateFields()
                     if (BoardData::validXandY(x,y)) {
                         Field &f = m_workingBoard.fields()[BoardData::indexForXandY(x,y)];
                         if (f.hasPiece()) {
-                            // If foreign piece, can move here. But still, break!
+                            // Don't continue if there is a piece (can never move through pieces)
+                            cont = false;
+                            // If own piece, also cannot move here, so break
                             Piece other = m_workingBoard.getPiece(f.pieceId());
-                            if (other.color() != p.color()) {
-                                f.setMovable(true);
-                                f.setMoveDirection(off.dir);
-                                f.setMoveLength(l);
+                            if (other.color() == p.color()) {
+                                break;
                             }
-                            break;
                         }
-                        f.setMovable(true);
-                        f.setMoveDirection(off.dir);
-                        f.setMoveLength(l);
+
+                        // Check flanking conditions
+                        if (!checkFieldFlankedForMove(BoardData::indexForXandY(x,y), m_player->thisPlayer())) {
+                            f.setMovable(true);
+                            f.setMoveDirection(off.dir);
+                            f.setMoveLength(l);
+                        }
                     }
                 }
             }
@@ -263,6 +267,67 @@ bool InteractionController::canMove(int len) const
 
     if (m_move.getMoveLength() + len <= p.moveCount())
         return true;
+    return false;
+}
+
+bool InteractionController::checkFieldFlankedForMove(PellatioDefinitions::FieldIndex idx, PellatioDefinitions::Color forColor)
+{
+    for (int d = 0; d < 4; ++d) {
+        // Check direction + opposite direction
+        PellatioDefinitions::Direction dir1 = static_cast<PellatioDefinitions::Direction> (d);
+        PellatioDefinitions::Direction dir2 = PellatioDefinitions::reversed(dir1);
+
+        PellatioDefinitions::MoveOffset off1 = PellatioDefinitions::MoveOffset::fromDirection(dir1, 1);
+        PellatioDefinitions::MoveOffset off2 = PellatioDefinitions::MoveOffset::fromDirection(dir2, 1);
+
+        int x1 = BoardData::xForIndex(idx)+off1.dx;
+        int y1 = BoardData::yForIndex(idx)+off1.dy;
+        int x2 = BoardData::xForIndex(idx)+off2.dx;
+        int y2 = BoardData::yForIndex(idx)+off2.dy;
+
+        if (!BoardData::validXandY(x1, y1) || !BoardData::validXandY(x2, y2)) {
+            // Field out of bounds ==> cannot flank
+            continue;
+        }
+
+        const Field *fld1 = m_workingBoard.field(BoardData::indexForXandY(x1, y1));
+        const Field *fld2 = m_workingBoard.field(BoardData::indexForXandY(x2, y2));
+
+        // Check if both have (foreign) piece
+        if (fld1->hasPiece() && fld2->hasPiece()) {
+            if (m_workingBoard.getPiece(fld1->pieceId()).color() != forColor
+                    && m_workingBoard.getPiece(fld2->pieceId()).color() != forColor)
+            {
+                // Both foreign => Flanked.
+                // Check double-flanking
+
+                int xx1 = BoardData::xForIndex(idx)+2*off1.dx;
+                int yy1 = BoardData::yForIndex(idx)+2*off1.dy;
+                int xx2 = BoardData::xForIndex(idx)+2*off2.dx;
+                int yy2 = BoardData::yForIndex(idx)+2*off2.dy;
+
+                bool doubleFlanded = false;
+                if (BoardData::validXandY(xx1, yy1)) {
+                    const Field *f = m_workingBoard.field(BoardData::indexForXandY(xx1, yy1));
+                    if (f->hasPiece() && m_workingBoard.getPiece(f->pieceId()).color() == forColor) {
+                        doubleFlanded = true;
+                    }
+                }
+
+                if (BoardData::validXandY(xx2, yy2)) {
+                    const Field *f = m_workingBoard.field(BoardData::indexForXandY(xx2, yy2));
+                    if (f->hasPiece() && m_workingBoard.getPiece(f->pieceId()).color() == forColor) {
+                        doubleFlanded = true;
+                    }
+                }
+
+                if (!doubleFlanded) {
+                    return true;
+                }
+            }
+        }
+    }
+
     return false;
 }
 

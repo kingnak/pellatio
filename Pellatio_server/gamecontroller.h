@@ -24,6 +24,8 @@ public:
 private:
     QList<MoveData::MoveStep> transformMove(MoveData::MoveStep move);
 
+    QList<MoveData::MoveStep> checkFlankingCaptures(MoveData::MoveStep baseMove);
+
 private:
     Board m_board;
     PellatioDefinitions::Color m_curPlayer;

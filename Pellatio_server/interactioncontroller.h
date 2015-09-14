@@ -30,6 +30,7 @@ private:
     bool moveFinished() const;
     bool canRotate() const;
     bool canMove(int len) const;
+    bool checkFieldFlankedForMove(PellatioDefinitions::FieldIndex idx, PellatioDefinitions::Color forColor);
 
     bool isCurrentPlayerActive() const;
 

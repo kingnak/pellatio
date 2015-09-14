@@ -53,6 +53,10 @@ bool GameController::applyMove(MoveData move)
             act.setField(-1);
             m_board.updatePiece(act);
             break;
+        case MoveData::MoveStep::FlankedCapture:
+            pass.setField(-1);
+            m_board.updatePiece(pass);
+            break;
         }
     }
 
@@ -106,6 +110,10 @@ QList<MoveData::MoveStep> GameController::transformMove(MoveData::MoveStep move)
     if (!to->hasPiece()) {
         // Nothing on destination, just move
         ret << move;
+
+        // Add Flanking
+        ret.append(checkFlankingCaptures(move));
+
         return ret;
     }
 
@@ -124,6 +132,12 @@ QList<MoveData::MoveStep> GameController::transformMove(MoveData::MoveStep move)
             move.type = MoveData::MoveStep::MoveCapture;
         }
         ret << move;
+
+        // Add Flanking If Capture
+        if (move.type == MoveData::MoveStep::MoveCapture) {
+            ret.append(checkFlankingCaptures(move));
+        }
+
         return ret;
     }
 
@@ -157,5 +171,53 @@ QList<MoveData::MoveStep> GameController::transformMove(MoveData::MoveStep move)
         move.type = MoveData::MoveStep::MoveCapture;
     }
 
-    return QList<MoveData::MoveStep>() << move;
+    ret << move;
+
+    //Add Flanking if Capture or Move
+    if (move.type == MoveData::MoveStep::Move || move.type == MoveData::MoveStep::MoveCapture) {
+        ret.append(checkFlankingCaptures(move));
+    }
+
+    return ret;
+}
+
+QList<MoveData::MoveStep> GameController::checkFlankingCaptures(MoveData::MoveStep baseMove)
+{
+    Q_ASSERT(baseMove.type == MoveData::MoveStep::Move || baseMove.type == MoveData::MoveStep::MoveCapture);
+
+    QList<MoveData::MoveStep> ret;
+
+    Piece act = m_board.getPiece(baseMove.activePieceId);
+
+    for (int i = 0; i < 8; ++i) {
+        PellatioDefinitions::Direction dir = static_cast<PellatioDefinitions::Direction> (i);
+
+        PellatioDefinitions::MoveOffset off = PellatioDefinitions::MoveOffset::fromDirection(dir);
+        int xFar = BoardData::xForIndex(baseMove.moveField) + off.dx*2;
+        int yFar = BoardData::yForIndex(baseMove.moveField) + off.dy*2;
+
+        if (BoardData::validXandY(xFar, yFar)) {
+            const Field *fFar = m_board.field(BoardData::indexForXandY(xFar, yFar));
+            if (fFar->hasPiece() && m_board.getPiece(fFar->pieceId()).color() == act.color()) {
+                // Flanking position. Check if there is a flanked piece
+                int xNear = BoardData::xForIndex(baseMove.moveField) + off.dx;
+                int yNear = BoardData::yForIndex(baseMove.moveField) + off.dy;
+
+                if (BoardData::validXandY(xNear, yNear)) {
+                    const Field *fNear = m_board.field(BoardData::indexForXandY(xNear, yNear));
+                    if (fNear->hasPiece()) {
+                        Piece pass = m_board.getPiece(fNear->pieceId());
+                        if (pass.color() != act.color()) {
+                            // FLANKED!
+                            MoveData::MoveStep flank = MoveData::MoveStep::flank(act, pass, dir);
+                            ret << flank;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    return ret;
 }

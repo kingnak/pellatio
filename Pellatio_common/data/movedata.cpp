@@ -37,3 +37,14 @@ MoveData::MoveStep MoveData::MoveStep::move(const PieceData &d, PellatioDefiniti
     ret.moveField = dest;
     return ret;
 }
+
+MoveData::MoveStep MoveData::MoveStep::flank(const PieceData &act, const PieceData &pass, PellatioDefinitions::Direction dir)
+{
+    MoveStep ret;
+    ret.type = FlankedCapture;
+    ret.activePieceId = act.id();
+    ret.passivePieceId = pass.id();
+    ret.field = pass.field();
+    ret.direction = dir;
+    return ret;
+}

@@ -29,6 +29,8 @@ public:
 
         static MoveStep rotate(const PieceData &d, PellatioDefinitions::Rotation dir);
         static MoveStep move(const PieceData &d, PellatioDefinitions::Direction dir, int len, PellatioDefinitions::FieldIndex dest);
+        static MoveStep flank(const PieceData &act, const PieceData &pass, PellatioDefinitions::Direction dir);
+
     };
 
     QList<MoveStep> steps() const { return m_steps; }
