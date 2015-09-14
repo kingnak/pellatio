@@ -12,13 +12,14 @@ SOURCES += main.cpp \
     fieldmodel.cpp \
     piecemodel.cpp \
     rotationmodel.cpp \
-    localgameinterface.cpp \
     pellatioqmldefinitions.cpp \
     localplayer.cpp \
     infomodel.cpp \
     previewmodel.cpp \
     animationmodel.cpp \
-    flankmodel.cpp
+    flankmodel.cpp \
+    playerproxy.cpp \
+    dualgameinterface.cpp
 
 RESOURCES += qml.qrc
 
@@ -52,10 +53,11 @@ HEADERS += \
     fieldmodel.h \
     piecemodel.h \
     rotationmodel.h \
-    localgameinterface.h \
     pellatioqmldefinitions.h \
     localplayer.h \
     infomodel.h \
     previewmodel.h \
     animationmodel.h \
-    flankmodel.h
+    flankmodel.h \
+    playerproxy.h \
+    dualgameinterface.h

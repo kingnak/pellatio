@@ -81,8 +81,6 @@ void AnimationModel::doAnimateStep()
     case MoveData::MoveStep::FlankedCapture:
         t = " XF " + s.passivePieceId;
         m_flanks->updateData(QList<MoveData::MoveStep>() << s);
-        //animationStarted();
-        //QTimer::singleShot(500, this, SLOT(animationFinished()));
         break;
     case MoveData::MoveStep::None:
         break;

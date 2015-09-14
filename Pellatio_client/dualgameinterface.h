@@ -4,14 +4,12 @@
 #include "gameinterface.h"
 #include <QMap>
 
-class LocalPlayer;
+class PlayerProxy;
 
-class LocalGameInterface : public GameInterface
+class DualGameInterface : public GameInterface
 {
 public:
-    explicit LocalGameInterface(QObject *parent = NULL);
-
-    void addLocalPlayer(LocalPlayer *p);
+    explicit DualGameInterface(PlayerProxy *p1, PlayerProxy *p2, QObject *parent = NULL);
 
     virtual void confirmMove();
     virtual void resetMove();
@@ -23,7 +21,7 @@ public:
     virtual void animateMove(MoveData move);
 
 private:
-    QMap<PellatioDefinitions::Color, LocalPlayer *> m_player;
+    QMap<PellatioDefinitions::Color, PlayerProxy *> m_player;
     bool m_anim;
 };
 

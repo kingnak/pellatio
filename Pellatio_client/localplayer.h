@@ -2,23 +2,31 @@
 #define LOCALPLAYER_H
 
 #include <player.h>
+#include <playerproxy.h>
 
-class LocalGameInterface;
+class GameInterface;
 
-class LocalPlayer : public Player
+class LocalPlayer : public Player, public PlayerProxy
 {
 public:
     LocalPlayer(PellatioDefinitions::Color playerColor);
 
-    void setGameInterface(LocalGameInterface *lgi);
+    virtual PellatioDefinitions::Color thisPlayer() const;
+
+    void setGameInterface(GameInterface *lgi);
 
     virtual void activate() {}
     virtual void deactivate() {}
     virtual void commitUpdates();
     virtual void showMove(MoveData move, BoardData board);
 
+    void selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm);
+    void rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm);
+    void resetMove();
+    void confirmMove();
+
 private:
-    LocalGameInterface *m_inter;
+    GameInterface *m_inter;
 };
 
 #endif // LOCALPLAYER_H

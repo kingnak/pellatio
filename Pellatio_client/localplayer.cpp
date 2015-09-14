@@ -1,21 +1,26 @@
 #include "localplayer.h"
-#include "localgameinterface.h"
+#include "gameinterface.h"
 #include "confirmmodel.h"
 #include "rotationmodel.h"
 #include "fieldmodel.h"
 #include "piecemodel.h"
 #include "infomodel.h"
 #include "previewmodel.h"
+#include "interactioncontroller.h"
 
 LocalPlayer::LocalPlayer(PellatioDefinitions::Color playerColor)
     : Player(playerColor)
 {
 }
 
-void LocalPlayer::setGameInterface(LocalGameInterface *lgi)
+PellatioDefinitions::Color LocalPlayer::thisPlayer() const
+{
+    return Player::thisPlayer();
+}
+
+void LocalPlayer::setGameInterface(GameInterface *lgi)
 {
     m_inter = lgi;
-    lgi->addLocalPlayer(this);
 }
 
 void LocalPlayer::commitUpdates()
@@ -31,4 +36,24 @@ void LocalPlayer::commitUpdates()
 void LocalPlayer::showMove(MoveData move, BoardData board)
 {
     m_inter->animateMove(move);
+}
+
+void LocalPlayer::selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm)
+{
+    m_ctrl->selectField(idx, autoConfirm);
+}
+
+void LocalPlayer::rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm)
+{
+    m_ctrl->rotateSelected(dir, autoConfirm);
+}
+
+void LocalPlayer::resetMove()
+{
+    m_ctrl->resetMove();
+}
+
+void LocalPlayer::confirmMove()
+{
+    m_ctrl->confirmMove();
 }

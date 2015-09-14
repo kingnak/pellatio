@@ -15,19 +15,20 @@ class ConfirmModel;
 class InfoModel;
 class PreviewModel;
 class AnimationModel;
+class PlayerProxy;
 
 class GameInterface : public QObject
 {
     Q_OBJECT
 public:
-    explicit GameInterface(QObject *parent = 0);
+    explicit GameInterface(PlayerProxy *thisPlayer, QObject *parent = 0);
 
-    virtual void confirmMove() = 0;
-    virtual void resetMove() = 0;
-    virtual void select(PellatioDefinitions::FieldIndex idx) = 0;
-    virtual void rotateSelected(PellatioDefinitions::Rotation rot) = 0;
+    virtual void confirmMove();
+    virtual void resetMove();
+    virtual void select(PellatioDefinitions::FieldIndex idx);
+    virtual void rotateSelected(PellatioDefinitions::Rotation rot);
 
-    virtual PellatioDefinitions::Color thisPlayer() = 0;
+    virtual PellatioDefinitions::Color thisPlayer();
 
     FieldModel *fieldModel() { return m_fields; }
     PieceModel * pieceModel() { return m_pieces; }
@@ -38,8 +39,6 @@ public:
     AnimationModel *animationModel() { return m_anim; }
 
     virtual void animateMove(MoveData move);
-    //virtual void updatePieces(QList<PieceData> pieces);
-
 
 protected:
     FieldModel *m_fields;
@@ -49,6 +48,8 @@ protected:
     InfoModel *m_info;
     PreviewModel *m_preview;
     AnimationModel *m_anim;
+
+    PlayerProxy *m_thisPlayer;
 };
 
 #endif // GAMEINTERFACE_H

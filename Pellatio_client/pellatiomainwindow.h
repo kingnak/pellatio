@@ -10,7 +10,7 @@ class Player;
 class GameInterface;
 class GameController;
 class QtQuick1ApplicationViewer;
-class LocalGameInterface;
+class DualGameInterface;
 class PellatioQMLDefinitions;
 
 class PellatioMainWindow : public QObject

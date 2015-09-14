@@ -19,7 +19,7 @@ public:
 
     PellatioDefinitions::Color thisPlayer() const { return m_thisPlayer; }
 
-    void setInteractionController(InteractionController *ctrl);
+    virtual void setInteractionController(InteractionController *ctrl);
 
     virtual void activate() = 0;
     virtual void deactivate() = 0;
@@ -31,21 +31,13 @@ public:
 
     virtual void commitUpdates() = 0;
 
-    void selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm);
-    void rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm);
-    void resetMove();
-    void confirmMove();
-protected:
-
 protected:
     PellatioDefinitions::Color m_thisPlayer;
-    InteractionController *m_ctrl;
-
-    //BoardData m_board;
-    //QList<FieldData> m_fields;
     GameStateData m_gameState;
     InteractionOptionsData m_options;
     MoveData m_previewMove;
+
+    InteractionController *m_ctrl;
 };
 
 #endif // PLAYER_H

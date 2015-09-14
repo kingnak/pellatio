@@ -3,7 +3,7 @@
 #include <QDeclarativeItem>
 #include <QDeclarativeContext>
 
-#include "localgameinterface.h"
+#include "dualgameinterface.h"
 #include "rotationmodel.h"
 #include "confirmmodel.h"
 #include "fieldmodel.h"
@@ -61,11 +61,7 @@ void PellatioMainWindow::startLocalSingleWindow()
 
     m_players << p1 << p2;
 
-    LocalGameInterface *lgi = new LocalGameInterface;
-    p1->setGameInterface(lgi);
-    p2->setGameInterface(lgi);
-
-
+    DualGameInterface *lgi = new DualGameInterface(p1, p2);
     m_interfaces << lgi;
 
     m_game->changePlayer();
@@ -113,10 +109,8 @@ void PellatioMainWindow::startLocalMultipleWindow()
 
     m_players << p1 << p2;
 
-    LocalGameInterface *lgi1 = new LocalGameInterface;
-    LocalGameInterface *lgi2 = new LocalGameInterface;
-    p1->setGameInterface(lgi1);
-    p2->setGameInterface(lgi2);
+    GameInterface *lgi1 = new GameInterface(p1);
+    GameInterface *lgi2 = new GameInterface(p2);
 
     m_interfaces << lgi1 << lgi2;
 
