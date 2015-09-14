@@ -5,11 +5,13 @@
 #include <QEventLoop>
 #include <QTimer>
 #include <iostream>
+#include "flankmodel.h"
 
 AnimationModel::AnimationModel(GameInterface *inter, QObject *parent) :
     QObject(parent), m_inter(inter), m_animCt(0)
 {
     m_loop = new QEventLoop(this);
+    m_flanks = new FlankModel;
 }
 
 void AnimationModel::animate(MoveData move)
@@ -74,7 +76,12 @@ void AnimationModel::doAnimateStep()
         m_inter->pieceModel()->updateSinglePieceField(s.activePieceId, s.moveField);
         m_inter->pieceModel()->updateSinglePieceCapture(s.activePieceId, true);
         break;
-    case MoveData::MoveStep::FlankedCapture: t = " XF " + s.passivePieceId; break;
+    case MoveData::MoveStep::FlankedCapture:
+        t = " XF " + s.passivePieceId;
+        m_flanks->updateData(QList<MoveData::MoveStep>() << s);
+        animationStarted();
+        QTimer::singleShot(500, this, SLOT(animationFinished()));
+        break;
     case MoveData::MoveStep::None:
         break;
     }

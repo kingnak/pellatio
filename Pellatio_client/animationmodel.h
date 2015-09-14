@@ -6,6 +6,7 @@
 
 class GameInterface;
 class QEventLoop;
+class FlankModel;
 
 class AnimationModel : public QObject
 {
@@ -14,6 +15,8 @@ public:
     explicit AnimationModel(GameInterface *inter, QObject *parent = 0);
 
     void animate(MoveData move);
+
+    FlankModel *flankModel() { return m_flanks; }
 
 signals:
 
@@ -29,6 +32,8 @@ protected slots:
 private:
     GameInterface *m_inter;
     QEventLoop *m_loop;
+
+    FlankModel *m_flanks;
 
     QList<MoveData::MoveStep> m_anims;
     int m_animCt;

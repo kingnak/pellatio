@@ -75,4 +75,21 @@ Rectangle {
         }
     }
 
+    Repeater {
+        id: flank_repeater
+        model: flankModel
+        Rectangle {
+            property int field
+            property int fx: field % def.boardSize
+            property int fy: Math.floor(field / def.boardSize)
+
+            width: 4
+            height: 2*def.boardSize
+            x: visualDef.tileSpace + (visualDef.tileSpace+visualDef.tileSize)*fx + (visualDef.tileSize+visualDef.tileSpace) / 2 - width/2
+            y: visualDef.tileSpace + (visualDef.tileSpace+visualDef.tileSize)*fy - height/2
+
+            rotation: direction*45
+        }
+    }
+
 }

@@ -11,6 +11,7 @@
 #include "infomodel.h"
 #include "previewmodel.h"
 #include "animationmodel.h"
+#include "flankmodel.h"
 #include <localplayer.h>
 #include <gamecontroller.h>
 #include "qtquick1applicationviewer.h"
@@ -141,6 +142,7 @@ void PellatioMainWindow::setupInterface(QtQuick1ApplicationViewer &viewer, GameI
     viewer.rootContext()->setContextProperty("previewModel", lgi->previewModel());
     viewer.rootContext()->setContextProperty("localPlayer", lgi->thisPlayer());
     viewer.rootContext()->setContextProperty("animationModel", lgi->animationModel());
+    viewer.rootContext()->setContextProperty("flankModel", lgi->animationModel()->flankModel());
 
     viewer.addImportPath(QLatin1String("modules"));
     viewer.setOrientation(QtQuick1ApplicationViewer::ScreenOrientationAuto);

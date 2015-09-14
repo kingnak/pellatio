@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     localplayer.cpp \
     infomodel.cpp \
     previewmodel.cpp \
-    animationmodel.cpp
+    animationmodel.cpp \
+    flankmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -56,4 +57,5 @@ HEADERS += \
     localplayer.h \
     infomodel.h \
     previewmodel.h \
-    animationmodel.h
+    animationmodel.h \
+    flankmodel.h
