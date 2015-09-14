@@ -40,6 +40,8 @@ void AnimationModel::doAnimate()
         doAnimateStep();
         m_loop->exec();
     }
+
+    m_flanks->clear();
 }
 
 void AnimationModel::doAnimateStep()
@@ -79,8 +81,8 @@ void AnimationModel::doAnimateStep()
     case MoveData::MoveStep::FlankedCapture:
         t = " XF " + s.passivePieceId;
         m_flanks->updateData(QList<MoveData::MoveStep>() << s);
-        animationStarted();
-        QTimer::singleShot(500, this, SLOT(animationFinished()));
+        //animationStarted();
+        //QTimer::singleShot(500, this, SLOT(animationFinished()));
         break;
     case MoveData::MoveStep::None:
         break;

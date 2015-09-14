@@ -19,6 +19,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 
     void updateData(QList<MoveData::MoveStep> flanks);
+    void clear();
 
 signals:
 

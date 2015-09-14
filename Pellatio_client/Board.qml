@@ -79,16 +79,46 @@ Rectangle {
         id: flank_repeater
         model: flankModel
         Rectangle {
-            property int field
+            id: theFlank
+            color: "transparent"
+            //color: "#8000ffff"
             property int fx: field % def.boardSize
             property int fy: Math.floor(field / def.boardSize)
 
-            width: 4
-            height: 2*def.boardSize
-            x: visualDef.tileSpace + (visualDef.tileSpace+visualDef.tileSize)*fx + (visualDef.tileSize+visualDef.tileSpace) / 2 - width/2
-            y: visualDef.tileSpace + (visualDef.tileSpace+visualDef.tileSize)*fy - height/2
+            z: 4
 
-            rotation: direction*45
+            x: (visualDef.tileSpace+visualDef.tileSize)*fx - (visualDef.tileSize+visualDef.tileSpace)/2
+            y: (visualDef.tileSpace+visualDef.tileSize)*fy - (visualDef.tileSize+visualDef.tileSpace)/2
+            width: 2*(visualDef.tileSpace*2+visualDef.tileSize)
+            height: 2*(visualDef.tileSpace*2+visualDef.tileSize)
+
+            Rectangle {
+                id: theFlankBar
+                anchors.centerIn: parent
+                width: 4
+                height: parent.height
+                color: "red"
+                rotation: ((direction+4)%8)*45
+
+                SequentialAnimation {
+                    PropertyAnimation {
+                        target: theFlankBar;
+                        properties: "height"
+                        from: 4; to: theFlank.height * ((direction%2 == 1) ? Math.SQRT2 : 1)
+                        duration: 250
+                    }
+                    PauseAnimation { duration: 250 }
+                    running: true
+                    onRunningChanged: {
+                        if (running)
+                            animationModel.animationStarted()
+                        else
+                            animationModel.animationFinished()
+                    }
+                }
+            }
+
+
         }
     }
 

@@ -1,5 +1,9 @@
 #include "flankmodel.h"
 
+#include <data/piecedata.h>
+#include <data/boarddata.h>
+
+
 FlankModel::FlankModel(QObject *parent) :
     QAbstractListModel(parent)
 {
@@ -7,6 +11,12 @@ FlankModel::FlankModel(QObject *parent) :
     roles[fieldRole] = "field";
     roles[directionRole] = "direction";
     setRoleNames(roles);
+
+    /*
+    PieceData a("A", PellatioDefinitions::Red, PellatioDefinitions::Aggressor, PellatioDefinitions::North, BoardData::indexForXandY(4,4));
+    PieceData p("B", PellatioDefinitions::Red, PellatioDefinitions::Aggressor, PellatioDefinitions::North, BoardData::indexForXandY(4,3));
+    m_data << MoveData::MoveStep::flank(a, p, PellatioDefinitions::SouthEast);
+    */
 }
 
 int FlankModel::rowCount(const QModelIndex &index) const
@@ -28,5 +38,11 @@ QVariant FlankModel::data(const QModelIndex &index, int role) const
 void FlankModel::updateData(QList<MoveData::MoveStep> flanks)
 {
     m_data = flanks;
+    reset();
+}
+
+void FlankModel::clear()
+{
+    m_data.clear();
     reset();
 }
