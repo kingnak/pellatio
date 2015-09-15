@@ -3,11 +3,12 @@
 
 #include "board.h"
 #include <data/movedata.h>
+#include "pellatio_server_global.h"
 
 class GameController;
 class Player;
 
-class InteractionController
+class PELLATIO_SERVERSHARED_EXPORT InteractionController
 {
 public:
     InteractionController(GameController *ctrl, Player *player);

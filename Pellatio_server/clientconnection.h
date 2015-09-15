@@ -4,7 +4,7 @@
 #include <networkconnection.h>
 
 class NetworkPlayer;
-class Message;
+struct Message;
 class GameController;
 
 class ClientConnection : public NetworkConnection

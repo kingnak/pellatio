@@ -3,8 +3,9 @@
 
 #include <QTcpServer>
 #include "gamecontroller.h"
+#include "pellatio_server_global.h"
 
-class GameServer : public QTcpServer
+class PELLATIO_SERVERSHARED_EXPORT GameServer : public QTcpServer
 {
 public:
     GameServer(GameController *ctrl);

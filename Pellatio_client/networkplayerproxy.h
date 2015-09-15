@@ -4,7 +4,7 @@
 #include <QObject>
 #include "playerproxy.h"
 
-class Message;
+struct Message;
 class NetworkConnection;
 class QTcpSocket;
 
@@ -30,8 +30,6 @@ public slots:
 private slots:
     void sendVersion();
     void shutdown();
-
-private slots:
     void handleMessage(const Message &msg);
 
 private:
