@@ -18,8 +18,12 @@ public:
 
     bool addPlayer(Player *player);
 
+    bool start();
+
     PellatioDefinitions::Color currentPlayer() const { return m_curPlayer; }
     void changePlayer();
+
+    bool getNextPlayerColor(PellatioDefinitions::Color &c);
 
 private:
     QList<MoveData::MoveStep> transformMove(MoveData::MoveStep move);
@@ -27,6 +31,7 @@ private:
     QList<MoveData::MoveStep> checkFlankingCaptures(MoveData::MoveStep baseMove);
 
 private:
+    bool m_started;
     Board m_board;
     PellatioDefinitions::Color m_curPlayer;
     QMap<PellatioDefinitions::Color, InteractionController *> m_interactors;

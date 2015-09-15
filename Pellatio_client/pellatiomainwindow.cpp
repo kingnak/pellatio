@@ -16,6 +16,11 @@
 #include <gamecontroller.h>
 #include "qtquick1applicationviewer.h"
 
+#include <QTcpSocket>
+#include <networkplayerproxy.h>
+#include <networkconnection.h>
+#include <gameserver.h>
+
 PellatioMainWindow::PellatioMainWindow(QObject *parent) :
     QObject(parent), m_game(NULL)
 {
@@ -58,6 +63,7 @@ void PellatioMainWindow::startLocalSingleWindow()
     m_game->addPlayer(p1);
     LocalPlayer *p2 = new LocalPlayer(PellatioDefinitions::Black);
     m_game->addPlayer(p2);
+    m_game->start();
 
     m_players << p1 << p2;
 
@@ -107,6 +113,8 @@ void PellatioMainWindow::startLocalMultipleWindow()
     LocalPlayer *p2 = new LocalPlayer(PellatioDefinitions::Black);
     m_game->addPlayer(p2);
 
+    m_game->start();
+
     m_players << p1 << p2;
 
     GameInterface *lgi1 = new GameInterface(p1);
@@ -123,6 +131,62 @@ void PellatioMainWindow::startLocalMultipleWindow()
 
     setupInterface(*viewer1, lgi1, m_defs);
     setupInterface(*viewer2, lgi2, m_defs);
+}
+
+void PellatioMainWindow::hostGame()
+{
+    m_startWindow->close();
+    m_startWindow->deleteLater();
+    m_startWindow = NULL;
+
+    m_game = new GameController;
+    PellatioDefinitions::Color c;
+    m_game->getNextPlayerColor(c);
+    LocalPlayer *p1 = new LocalPlayer(c);
+    m_game->addPlayer(p1);
+
+    GameInterface *gi = new GameInterface(p1);
+
+    GameServer *server = new GameServer(m_game);
+    server->start();
+
+    /*
+    LocalPlayer *p2 = new LocalPlayer(PellatioDefinitions::Black);
+    m_game->addPlayer(p2);
+
+    m_players << p1 << p2;
+
+    DualGameInterface *lgi = new DualGameInterface(p1, p2);
+    m_interfaces << lgi;
+
+    m_game->changePlayer();
+    */
+    QtQuick1ApplicationViewer *viewer = new QtQuick1ApplicationViewer;
+
+    m_windows << viewer;
+
+    setupInterface(*viewer, gi, m_defs);
+}
+
+void PellatioMainWindow::jointGame(QString host)
+{
+    m_startWindow->close();
+    m_startWindow->deleteLater();
+    m_startWindow = NULL;
+
+    QTcpSocket *sock = new QTcpSocket(this);
+    sock->connectToHost(host, 8069);
+    sock->waitForConnected();
+    //NetworkConnection *conn = new NetworkConnection()
+    NetworkPlayerProxy *p = new NetworkPlayerProxy(sock, this);
+    GameInterface *gi = new GameInterface(p, this);
+    QtQuick1ApplicationViewer *viewer = new QtQuick1ApplicationViewer;
+
+    m_windows << viewer;
+    setupInterface(*viewer, gi, m_defs);
+    p->start();
+    //m_players << p;
+    //m_players <<
 }
 
 void PellatioMainWindow::setupInterface(QtQuick1ApplicationViewer &viewer, GameInterface *lgi, PellatioQMLDefinitions *d) {

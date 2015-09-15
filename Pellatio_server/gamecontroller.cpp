@@ -6,6 +6,7 @@
 
 GameController::GameController()
 {
+    m_started = false;
     m_curPlayer = PellatioDefinitions::Red;
     m_board.initializeStartBoard();
 }
@@ -75,8 +76,21 @@ bool GameController::addPlayer(Player *player)
     if (m_interactors.contains(player->thisPlayer())) {
         return false;
     }
+    if (m_interactors.size() >= 2) {
+        return false;
+    }
     m_interactors[player->thisPlayer()] = new InteractionController(this, player);
     return true;
+}
+
+bool GameController::start()
+{
+    if (m_started) return false;
+    if (m_interactors.size() == 2) {
+        changePlayer();
+        return true;
+    }
+    return false;
 }
 
 void GameController::changePlayer()
@@ -89,6 +103,20 @@ void GameController::changePlayer()
     }
     m_interactors[oldPlayer]->deactivate();
     m_interactors[m_curPlayer]->activate();
+}
+
+bool GameController::getNextPlayerColor(PellatioDefinitions::Color &c)
+{
+    switch (m_interactors.size()) {
+    case 0:
+        c = PellatioDefinitions::Black;
+        return true;
+    case 1:
+        c = PellatioDefinitions::Red;
+        return true;
+    default:
+        return false;
+    }
 }
 
 QList<MoveData::MoveStep> GameController::transformMove(MoveData::MoveStep move)

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-#QT       += network
+QT       += network
 
 QT       -= gui
 
@@ -19,7 +19,9 @@ SOURCES += pellatiodefinitions.cpp \
     data/interactionoptionsdata.cpp \
     data/boarddata.cpp \
     data/gamestatedata.cpp \
-    data/movedata.cpp
+    data/movedata.cpp \
+    message.cpp \
+    networkconnection.cpp
 
 HEADERS += pellatiodefinitions.h\
         pellatio_common_global.h \
@@ -29,7 +31,9 @@ HEADERS += pellatiodefinitions.h\
     data/interactionoptionsdata.h \
     data/boarddata.h \
     data/gamestatedata.h \
-    data/movedata.h
+    data/movedata.h \
+    message.h \
+    networkconnection.h
 
 unix {
     target.path = /usr/lib

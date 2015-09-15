@@ -23,7 +23,11 @@ public:
 public slots:
     void startLocalSingleWindow();
     void startLocalMultipleWindow();
+    void hostGame();
+    void jointGame(QString host);
     void start();
+
+private slots:
 
 private:
     void setupInterface(QtQuick1ApplicationViewer &viewer, GameInterface *lgi, PellatioQMLDefinitions *d);

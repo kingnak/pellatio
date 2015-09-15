@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-#QT       += network
+QT       += network
 
 QT       -= gui
 
@@ -18,7 +18,10 @@ SOURCES += gamecontroller.cpp \
     interactioncontroller.cpp \
     piece.cpp \
     field.cpp \
-    player.cpp
+    player.cpp \
+    networkplayer.cpp \
+    gameserver.cpp \
+    clientconnection.cpp
 
 HEADERS += gamecontroller.h\
         pellatio_server_global.h \
@@ -26,7 +29,10 @@ HEADERS += gamecontroller.h\
     interactioncontroller.h \
     piece.h \
     field.h \
-    player.h
+    player.h \
+    networkplayer.h \
+    gameserver.h \
+    clientconnection.h
 
 unix {
     target.path = /usr/lib

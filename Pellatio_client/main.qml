@@ -34,7 +34,11 @@ Item {
                 operation: "Network Game"
                 width: parent.width - 10
                 anchors.horizontalCenter: parent.horizontalCenter
-                enabled: false
+                //enabled: false
+                onClicked: {
+                    typeChooser.visible = false;
+                    networkChooser.visible = true;
+                }
             }
         }
 
@@ -54,6 +58,31 @@ Item {
                 width: parent.width - 10
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: window.startLocalMultipleWindow()
+            }
+        }
+
+        Column {
+            id: networkChooser
+            anchors.fill: parent
+            visible: false
+            spacing: 10
+            Button {
+                operation: "Host Game"
+                width: parent.width - 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                onClicked: window.hostGame()
+            }
+            Button {
+                operation: "Join Game"
+                width: parent.width - 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                onClicked: window.jointGame(host.text)
+            }
+            TextEdit{
+                id: host
+                width: parent.width - 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "localhost"
             }
         }
     }

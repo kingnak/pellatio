@@ -48,3 +48,48 @@ MoveData::MoveStep MoveData::MoveStep::flank(const PieceData &act, const PieceDa
     ret.direction = dir;
     return ret;
 }
+
+DEFINE_ENUM_SERIALIZER(MoveData::MoveStep::Type)
+
+void operator << (QVariant &data, const MoveData &target)
+{
+    QVariantMap m;
+    m["steps"] << target.m_steps;
+    data << m;
+}
+
+void operator >> (const QVariant &data, MoveData &target)
+{
+    QVariantMap m;
+    data >> m;
+    m["steps"] >> target.m_steps;
+}
+
+void operator << (QVariant &data, const MoveData::MoveStep &target)
+{
+    QVariantMap m;
+    m["type"] << target.type;
+    m["field"] << target.field;
+    m["activePieceId"] << target.activePieceId;
+    m["passivePieceId"] << target.passivePieceId;
+    m["rotation"] << target.rotation;
+    m["direction"] << target.direction;
+    m["moveLength"] << target.moveLength;
+    m["moveField"] << target.moveField;
+    data << m;
+}
+
+void operator >> (const QVariant &data, MoveData::MoveStep &target)
+{
+    QVariantMap m;
+    data >> m;
+    m["type"] >> target.type;
+    m["field"] >> target.field;
+    m["activePieceId"] >> target.activePieceId;
+    m["passivePieceId"] >> target.passivePieceId;
+    m["rotation"] >> target.rotation;
+    m["direction"] >> target.direction;
+    m["moveLength"] >> target.moveLength;
+    m["moveField"] >> target.moveField;
+}
+

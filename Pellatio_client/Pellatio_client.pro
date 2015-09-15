@@ -1,5 +1,5 @@
 
-#QT       += network
+QT       += network
 
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
@@ -19,7 +19,8 @@ SOURCES += main.cpp \
     animationmodel.cpp \
     flankmodel.cpp \
     playerproxy.cpp \
-    dualgameinterface.cpp
+    dualgameinterface.cpp \
+    networkplayerproxy.cpp
 
 RESOURCES += qml.qrc
 
@@ -60,4 +61,5 @@ HEADERS += \
     animationmodel.h \
     flankmodel.h \
     playerproxy.h \
-    dualgameinterface.h
+    dualgameinterface.h \
+    networkplayerproxy.h

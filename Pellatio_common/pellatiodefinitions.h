@@ -58,4 +58,10 @@ DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions
 DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions::Rotation);
 DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions::Direction);
 
+Q_DECLARE_METATYPE(PellatioDefinitions::FieldIndex)
+Q_DECLARE_METATYPE(PellatioDefinitions::PieceType)
+Q_DECLARE_METATYPE(PellatioDefinitions::Color)
+Q_DECLARE_METATYPE(PellatioDefinitions::Rotation)
+Q_DECLARE_METATYPE(PellatioDefinitions::Direction)
+
 #endif // PELLATIODEFINITIONS_H
