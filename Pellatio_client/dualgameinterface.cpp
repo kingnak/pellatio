@@ -2,6 +2,7 @@
 #include "infomodel.h"
 #include "localplayer.h"
 #include "confirmmodel.h"
+#include "messagemodel.h"
 
 DualGameInterface::DualGameInterface(PlayerProxy *p1, PlayerProxy *p2, QObject *parent)
     : GameInterface(p1, parent), m_anim(false)
@@ -46,4 +47,15 @@ void DualGameInterface::animateMove(MoveData move)
         GameInterface::animateMove(move);
     }
     m_anim = !m_anim;
+}
+
+void DualGameInterface::notifyWinner(PellatioDefinitions::Color winner)
+{
+    if (m_msg) {
+        QString s("%1 has won!");
+        s = s.arg(winner == PellatioDefinitions::Black
+               ? "Black"
+               : "Red");
+        m_msg->generalMessage(s);
+    }
 }

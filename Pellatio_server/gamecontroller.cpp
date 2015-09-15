@@ -119,6 +119,51 @@ bool GameController::getNextPlayerColor(PellatioDefinitions::Color &c)
     }
 }
 
+QMap<PellatioDefinitions::Color, quint8> GameController::countPoints(bool *hasWinner, PellatioDefinitions::Color *winner) const
+{
+    // Dummies if pointers are null
+    bool dummyHasWinner;
+    PellatioDefinitions::Color dummyWinner;
+    if (!hasWinner) hasWinner = &dummyHasWinner;
+    if (!winner) winner = &dummyWinner;
+
+    *hasWinner = false;
+    PellatioDefinitions::Color generalCaptureColor;
+    QMap<PellatioDefinitions::Color, quint8> ret;
+    // Sum up
+    foreach (Piece p, m_board.pieces()) {
+        if (!p.onField()) {
+            PellatioDefinitions::Color pointsFor = (p.color() == PellatioDefinitions::Red) ? PellatioDefinitions::Black : PellatioDefinitions::Red;
+            quint8 points = 0;
+            switch (p.type()) {
+            case PellatioDefinitions::Aggressor: points = 1; break;
+            case PellatioDefinitions::Phalangit: points = 3; break;
+            case PellatioDefinitions::Kavalerist: points = 6; break;
+            case PellatioDefinitions::General:
+                // If general is captured, we have a winner
+                points = 9;
+                *hasWinner = true;
+                generalCaptureColor = pointsFor;
+                break;
+            }
+            ret[pointsFor] += points;
+        }
+    }
+
+    if (*hasWinner) {
+        if (ret[PellatioDefinitions::Black] == ret[PellatioDefinitions::Red]) {
+            // On draw, the one that has captured the general wins
+            *winner = generalCaptureColor;
+        } else if (ret[PellatioDefinitions::Black] > ret[PellatioDefinitions::Red]) {
+            *winner = PellatioDefinitions::Black;
+        } else {
+            *winner = PellatioDefinitions::Red;
+        }
+    }
+
+    return ret;
+}
+
 QList<MoveData::MoveStep> GameController::transformMove(MoveData::MoveStep move)
 {
     if (move.type == MoveData::MoveStep::Rotate)

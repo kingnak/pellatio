@@ -16,12 +16,15 @@ class InfoModel;
 class PreviewModel;
 class AnimationModel;
 class PlayerProxy;
+class MessageModel;
 
 class GameInterface : public QObject
 {
     Q_OBJECT
 public:
     explicit GameInterface(PlayerProxy *thisPlayer, QObject *parent = 0);
+
+    virtual void setMessageModel(MessageModel *msg);
 
     virtual void confirmMove();
     virtual void resetMove();
@@ -30,6 +33,8 @@ public:
 
     virtual PellatioDefinitions::Color thisPlayer();
 
+    virtual void thisPlayerChanged();
+
     FieldModel *fieldModel() { return m_fields; }
     PieceModel * pieceModel() { return m_pieces; }
     RotationModel *rotationModel() { return m_rotation; }
@@ -37,8 +42,10 @@ public:
     InfoModel *infoModel() { return m_info; }
     PreviewModel *previewModel() { return m_preview; }
     AnimationModel *animationModel() { return m_anim; }
+    //MessageModel *messageModel() { return m_msg; }
 
     virtual void animateMove(MoveData move);
+    virtual void notifyWinner(PellatioDefinitions::Color winner);
 
 protected:
     FieldModel *m_fields;
@@ -48,6 +55,7 @@ protected:
     InfoModel *m_info;
     PreviewModel *m_preview;
     AnimationModel *m_anim;
+    MessageModel *m_msg;
 
     PlayerProxy *m_thisPlayer;
 };

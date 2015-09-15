@@ -20,6 +20,7 @@
 #include <networkplayerproxy.h>
 #include <networkconnection.h>
 #include <gameserver.h>
+#include "messagemodel.h"
 
 PellatioMainWindow::PellatioMainWindow(QObject *parent) :
     QObject(parent), m_game(NULL)
@@ -30,6 +31,7 @@ PellatioMainWindow::PellatioMainWindow(QObject *parent) :
     qmlRegisterType<ColorType> ("Pellatio", 1, 0, "Color");
     qmlRegisterType<MoveType> ("Pellatio", 1, 0, "MoveType");
     qmlRegisterType<RotationType> ("Pellatio", 1, 0, "Rotation");
+    qmlRegisterType<MessageModel> ("Pellatio", 1, 0, "GameMessage");
 
     m_startWindow = new QtQuick1ApplicationViewer;
 }
@@ -63,14 +65,13 @@ void PellatioMainWindow::startLocalSingleWindow()
     m_game->addPlayer(p1);
     LocalPlayer *p2 = new LocalPlayer(PellatioDefinitions::Black);
     m_game->addPlayer(p2);
-    m_game->start();
 
     m_players << p1 << p2;
 
-    DualGameInterface *lgi = new DualGameInterface(p1, p2);
+    DualGameInterface *lgi = new DualGameInterface(p2, p1);
     m_interfaces << lgi;
 
-    m_game->changePlayer();
+    m_game->start();
 
     QtQuick1ApplicationViewer *viewer = new QtQuick1ApplicationViewer;
 
@@ -113,7 +114,6 @@ void PellatioMainWindow::startLocalMultipleWindow()
     LocalPlayer *p2 = new LocalPlayer(PellatioDefinitions::Black);
     m_game->addPlayer(p2);
 
-    m_game->start();
 
     m_players << p1 << p2;
 
@@ -122,7 +122,7 @@ void PellatioMainWindow::startLocalMultipleWindow()
 
     m_interfaces << lgi1 << lgi2;
 
-    m_game->changePlayer();
+    m_game->start();
 
     QtQuick1ApplicationViewer *viewer1 = new QtQuick1ApplicationViewer;
     QtQuick1ApplicationViewer *viewer2 = new QtQuick1ApplicationViewer;
@@ -180,11 +180,11 @@ void PellatioMainWindow::jointGame(QString host)
     //NetworkConnection *conn = new NetworkConnection()
     NetworkPlayerProxy *p = new NetworkPlayerProxy(sock, this);
     GameInterface *gi = new GameInterface(p, this);
+    p->start();
     QtQuick1ApplicationViewer *viewer = new QtQuick1ApplicationViewer;
 
     m_windows << viewer;
     setupInterface(*viewer, gi, m_defs);
-    p->start();
     //m_players << p;
     //m_players <<
 }
@@ -198,12 +198,15 @@ void PellatioMainWindow::setupInterface(QtQuick1ApplicationViewer &viewer, GameI
     viewer.rootContext()->setContextProperty("pieceModel", lgi->pieceModel());
     viewer.rootContext()->setContextProperty("infoModel", lgi->infoModel());
     viewer.rootContext()->setContextProperty("previewModel", lgi->previewModel());
-    viewer.rootContext()->setContextProperty("localPlayer", lgi->thisPlayer());
     viewer.rootContext()->setContextProperty("animationModel", lgi->animationModel());
     viewer.rootContext()->setContextProperty("flankModel", lgi->animationModel()->flankModel());
 
     viewer.addImportPath(QLatin1String("modules"));
     viewer.setOrientation(QtQuick1ApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qrc:///Game.qml"));
+
+    MessageModel *msg = viewer.rootObject()->findChildren<MessageModel*>().value(0);
+    lgi->setMessageModel(msg);
+
     viewer.showExpanded();
 }

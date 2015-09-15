@@ -37,6 +37,14 @@ public:
         West, NorthWest
     };
 
+    enum GameState {
+        NotStarted,
+        Running,
+        Terminated,
+        Winner,
+        Remis
+    };
+
     static Direction rotated(Direction d, Rotation r, quint8 count = 1);
     static Direction reversed(Direction d);
 
@@ -57,11 +65,13 @@ DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions
 DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions::Color);
 DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions::Rotation);
 DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions::Direction);
+DECLARE_ENUM_SERIALIZER_EXPORT(PELLATIO_COMMONSHARED_EXPORT, PellatioDefinitions::GameState);
 
 Q_DECLARE_METATYPE(PellatioDefinitions::FieldIndex)
 Q_DECLARE_METATYPE(PellatioDefinitions::PieceType)
 Q_DECLARE_METATYPE(PellatioDefinitions::Color)
 Q_DECLARE_METATYPE(PellatioDefinitions::Rotation)
 Q_DECLARE_METATYPE(PellatioDefinitions::Direction)
+Q_DECLARE_METATYPE(PellatioDefinitions::GameState)
 
 #endif // PELLATIODEFINITIONS_H

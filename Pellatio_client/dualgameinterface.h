@@ -20,6 +20,8 @@ public:
 
     virtual void animateMove(MoveData move);
 
+    virtual void notifyWinner(PellatioDefinitions::Color winner);
+
 private:
     QMap<PellatioDefinitions::Color, PlayerProxy *> m_player;
     bool m_anim;

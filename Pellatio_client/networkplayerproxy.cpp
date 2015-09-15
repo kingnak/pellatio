@@ -16,7 +16,7 @@
 #include <QDebug>
 
 NetworkPlayerProxy::NetworkPlayerProxy(QTcpSocket *sock, QObject *parent) :
-    QObject(parent), m_inter(NULL)
+    QObject(parent)
 {
     m_conn = new NetworkConnection(sock, this);
     connect(m_conn, SIGNAL(messageReceived(Message)), this, SLOT(handleMessage(Message)));
@@ -27,11 +27,6 @@ NetworkPlayerProxy::NetworkPlayerProxy(QTcpSocket *sock, QObject *parent) :
 void NetworkPlayerProxy::start()
 {
     sendVersion();
-}
-
-void NetworkPlayerProxy::setGameInterface(GameInterface *lgi)
-{
-    m_inter = lgi;
 }
 
 PellatioDefinitions::Color NetworkPlayerProxy::thisPlayer() const
@@ -93,6 +88,7 @@ void NetworkPlayerProxy::handleMessage(const Message &msg)
         PellatioDefinitions::Color c;
         msg.payload >> c;
         m_color = c;
+        m_inter->thisPlayerChanged();
         break;
     }
     case Message::S_CANNOT_ADD_PLAYER:
@@ -113,12 +109,7 @@ void NetworkPlayerProxy::handleMessage(const Message &msg)
         m["state"] >> st;
         m["options"] >> op;
         m["preview"] >> mov;
-        m_inter->infoModel()->updateData(st);
-        m_inter->confirmModel()->updateData(op);
-        m_inter->rotationModel()->updateData(op);
-        m_inter->fieldModel()->updateData(op.fields());
-        m_inter->previewModel()->updateData(mov);
-        m_inter->pieceModel()->updateData(st.board().pieces());
+        updateAllData(st, op, mov);
         break;
     }
 

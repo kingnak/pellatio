@@ -26,7 +26,7 @@ public:
     void resetFieldStates();
 
     QList<Field> &fields() { return m_fields; }
-    QList<Piece> pieces() { return m_pieces.values(); }
+    QList<Piece> pieces() const { return m_pieces.values(); }
 
 private:
     void placePiece(Piece *p, Field *f);

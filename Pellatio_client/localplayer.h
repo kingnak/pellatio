@@ -13,8 +13,6 @@ public:
 
     virtual PellatioDefinitions::Color thisPlayer() const;
 
-    void setGameInterface(GameInterface *lgi);
-
     virtual void activate() {}
     virtual void deactivate() {}
     virtual void commitUpdates();
@@ -24,9 +22,6 @@ public:
     void rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm);
     void resetMove();
     void confirmMove();
-
-private:
-    GameInterface *m_inter;
 };
 
 #endif // LOCALPLAYER_H

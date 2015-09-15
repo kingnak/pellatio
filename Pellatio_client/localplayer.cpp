@@ -18,19 +18,9 @@ PellatioDefinitions::Color LocalPlayer::thisPlayer() const
     return Player::thisPlayer();
 }
 
-void LocalPlayer::setGameInterface(GameInterface *lgi)
-{
-    m_inter = lgi;
-}
-
 void LocalPlayer::commitUpdates()
 {
-    m_inter->infoModel()->updateData(this->m_gameState);
-    m_inter->confirmModel()->updateData(this->m_options);
-    m_inter->rotationModel()->updateData(this->m_options);
-    m_inter->fieldModel()->updateData(this->m_options.fields());
-    m_inter->previewModel()->updateData(this->m_previewMove);
-    m_inter->pieceModel()->updateData(this->m_gameState.board().pieces());
+    updateAllData(m_gameState, m_options, m_previewMove);
 }
 
 void LocalPlayer::showMove(MoveData move, BoardData board)

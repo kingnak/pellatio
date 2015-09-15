@@ -10,7 +10,7 @@ Item {
 
     Board {
         id: board
-        rotation: localPlayer == Color.Red ? 180 : 0
+        rotation: infoModel.thisPlayer == Color.Red ? 180 : 0
     }
 
     Item {
@@ -68,7 +68,18 @@ Item {
                 onClicked: confirmModel.confirm()
             }
 
-            Row {
+            Grid {
+                rows: 4; columns: 2
+                spacing: 5
+                Text {
+                    text: "You"
+                }
+                Rectangle {
+                    width: 20
+                    height: 20
+                    color: infoModel.thisPlayer == Color.Red ? "red" : "black"
+                }
+
                 Text {
                     text: "Current Player"
                 }
@@ -77,10 +88,64 @@ Item {
                     height: 20
                     color: infoModel.currentPlayer == Color.Red ? "red" : "black"
                 }
+
+                Rectangle {
+                    width: 20
+                    height: 20
+                    color: "black"
+                }
+                Text {
+                    text: infoModel.blackPoints
+                }
+
+                Rectangle {
+                    width: 20
+                    height: 20
+                    color: "red"
+                }
+                Text {
+                    text: infoModel.redPoints
+                }
             }
         }
     }
 
     width: board.width+controls.width
     height: board.height
+
+    GameMessage {
+        onWon: {
+            messageLayer.message = "You have won!"
+            messageLayer.visible = true;
+        }
+        onLost: {
+            messageLayer.message = "You have lost!"
+            messageLayer.visible = true;
+        }
+        onMessage: {
+            messageLayer.message = msg;
+            messageLayer.visible = true;
+        }
+    }
+
+    Item {
+        id: messageLayer
+        anchors.fill: parent
+        visible: false
+        z: 10
+        property alias message: messageLayer_text.text
+        MouseArea {
+            anchors.fill: parent
+        }
+        Rectangle {
+            anchors.fill: parent
+            color: "#80000000"
+        }
+        Text {
+            id: messageLayer_text
+            anchors.centerIn: parent
+        }
+    }
+
+
 }

@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     flankmodel.cpp \
     playerproxy.cpp \
     dualgameinterface.cpp \
-    networkplayerproxy.cpp
+    networkplayerproxy.cpp \
+    messagemodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -62,4 +63,5 @@ HEADERS += \
     flankmodel.h \
     playerproxy.h \
     dualgameinterface.h \
-    networkplayerproxy.h
+    networkplayerproxy.h \
+    messagemodel.h

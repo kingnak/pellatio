@@ -16,7 +16,6 @@ public:
 
     void start();
 
-    virtual void setGameInterface(GameInterface *lgi);
     virtual PellatioDefinitions::Color thisPlayer() const;
     virtual void selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm);
     virtual void rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm);
@@ -34,7 +33,6 @@ private slots:
 
 private:
     NetworkConnection *m_conn;
-    GameInterface *m_inter;
     PellatioDefinitions::Color m_color;
 };
 

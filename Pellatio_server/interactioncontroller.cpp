@@ -117,22 +117,46 @@ void InteractionController::postMoveUpdates(bool autoConfirm)
         return;
     }
 
-    updateFields();
+
     //m_player->updateBoard(m_workingBoard.toData());
     GameStateData st;
     //st.setBoard(m_workingBoard.toData());
     st.setBoard(m_ctrl->board().toData());
     st.setCurrentPlayer(m_ctrl->currentPlayer());
+    st.setGameState(PellatioDefinitions::Running);
+
+    bool hasWinner;
+    PellatioDefinitions::Color winner;
+    QMap<PellatioDefinitions::Color, quint8> points = m_ctrl->countPoints(&hasWinner, &winner);
+    st.setBlackPoints(points[PellatioDefinitions::Black]);
+    st.setRedPoints(points[PellatioDefinitions::Red]);
+
+    if (hasWinner) {
+        st.setHasWinner(true);
+        st.setWinner(winner);
+        st.setGameState(PellatioDefinitions::Winner);
+    }
+
     m_player->updateGameState(st);
 
     InteractionOptionsData iod;
-    iod.setConfirmMove(moveStarted());
-    iod.setResetMove(moveStarted());
-    if (canRotate()) {
-        Piece p = m_workingBoard.getPiece(m_selectedPieceId);
-        if (p.isValid() && p.color() == m_player->thisPlayer()) iod.setRotation(p.getRotationModes());
+
+    if (!hasWinner) {
+        // Go on
+        updateFields();
+
+        iod.setConfirmMove(moveStarted());
+        iod.setResetMove(moveStarted());
+        if (canRotate()) {
+            Piece p = m_workingBoard.getPiece(m_selectedPieceId);
+            if (p.isValid() && p.color() == m_player->thisPlayer()) iod.setRotation(p.getRotationModes());
+        }
+        iod.setFields(m_workingBoard.getFieldData());
+    } else {
+        m_workingBoard.resetFieldStates();
+        iod.setFields(m_workingBoard.getFieldData());
     }
-    iod.setFields(m_workingBoard.getFieldData());
+
     m_player->updateInteractions(iod);
 
     m_player->updatePreviewMove(m_move);
