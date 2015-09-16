@@ -35,6 +35,16 @@ void NetworkPlayer::commitUpdates()
     m_conn->sendMessage(Message::S_COMMIT_UPDATES, m);
 }
 
+void NetworkPlayer::askForRemis()
+{
+    m_conn->sendMessage(Message::S_REMIS_OFFERED, QVariant());
+}
+
+void NetworkPlayer::remisDeclined()
+{
+    m_conn->sendMessage(Message::S_REMIS_DECLINED, QVariant());
+}
+
 void NetworkPlayer::handleMessage(const Message &msg)
 {
     switch (msg.type) {
@@ -62,6 +72,15 @@ void NetworkPlayer::handleMessage(const Message &msg)
         break;
     case Message::C_RESET_MOVE:
         m_ctrl->resetMove();
+        break;
+    case Message::C_OFFER_REMIS:
+        m_ctrl->offerRemis();
+        break;
+    case Message::C_ACCEPT_REMIS:
+        m_ctrl->acceptRemis();
+        break;
+    case Message::C_DECLINE_REMIS:
+        m_ctrl->declineRemis();
         break;
     default:
         m_conn->sendMessage(Message::DONT_UNDERSTAND, QVariant());

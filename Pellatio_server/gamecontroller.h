@@ -20,6 +20,13 @@ public:
 
     bool start();
 
+    void playerGivesUp(PellatioDefinitions::Color player);
+    void playerOffersRemis(PellatioDefinitions::Color player);
+    void playerAcceptsRemis();
+    void playerDeclinesRemis(PellatioDefinitions::Color player);
+
+    GameStateData getGameState() const;
+
     PellatioDefinitions::Color currentPlayer() const { return m_curPlayer; }
     void changePlayer();
 

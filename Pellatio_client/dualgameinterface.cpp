@@ -3,6 +3,7 @@
 #include "localplayer.h"
 #include "confirmmodel.h"
 #include "messagemodel.h"
+#include <QTimer>
 
 DualGameInterface::DualGameInterface(PlayerProxy *p1, PlayerProxy *p2, QObject *parent)
     : GameInterface(p1, parent), m_anim(false)
@@ -34,6 +35,40 @@ void DualGameInterface::rotateSelected(PellatioDefinitions::Rotation rot)
 {
     m_thisPlayer = m_player[static_cast<PellatioDefinitions::Color> (m_info->currentPlayer())];
     GameInterface::rotateSelected(rot);
+}
+
+void DualGameInterface::giveUp()
+{
+    m_thisPlayer = m_player[static_cast<PellatioDefinitions::Color> (m_info->currentPlayer())];
+    GameInterface::giveUp();
+}
+
+void DualGameInterface::offerRemis()
+{
+    QTimer::singleShot(0, this, SLOT(doOfferRemis()));
+}
+
+void DualGameInterface::doOfferRemis()
+{
+    m_player[static_cast<PellatioDefinitions::Color> (m_info->currentPlayer())];
+    GameInterface::offerRemis();
+}
+
+void DualGameInterface::acceptRemis()
+{
+    m_player[static_cast<PellatioDefinitions::Color> (m_info->currentPlayer())];
+    GameInterface::acceptRemis();
+}
+
+void DualGameInterface::declineRemis()
+{
+    QTimer::singleShot(0, this, SLOT(doDeclineRemis()));
+}
+
+void DualGameInterface::doDeclineRemis()
+{
+    m_player[static_cast<PellatioDefinitions::Color> (m_info->currentPlayer())];
+    GameInterface::declineRemis();
 }
 
 PellatioDefinitions::Color DualGameInterface::thisPlayer()

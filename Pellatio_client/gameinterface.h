@@ -17,6 +17,7 @@ class PreviewModel;
 class AnimationModel;
 class PlayerProxy;
 class MessageModel;
+class OptionModel;
 
 class GameInterface : public QObject
 {
@@ -31,6 +32,11 @@ public:
     virtual void select(PellatioDefinitions::FieldIndex idx);
     virtual void rotateSelected(PellatioDefinitions::Rotation rot);
 
+    virtual void giveUp();
+    virtual void offerRemis();
+    virtual void acceptRemis();
+    virtual void declineRemis();
+
     virtual PellatioDefinitions::Color thisPlayer();
 
     virtual void thisPlayerChanged();
@@ -42,10 +48,12 @@ public:
     InfoModel *infoModel() { return m_info; }
     PreviewModel *previewModel() { return m_preview; }
     AnimationModel *animationModel() { return m_anim; }
-    //MessageModel *messageModel() { return m_msg; }
+    MessageModel *messageModel() { return m_msg; }
+    OptionModel *optionModel() { return m_opts; }
 
     virtual void animateMove(MoveData move);
     virtual void notifyWinner(PellatioDefinitions::Color winner);
+    virtual void notifyRemis();
 
 protected:
     FieldModel *m_fields;
@@ -56,6 +64,7 @@ protected:
     PreviewModel *m_preview;
     AnimationModel *m_anim;
     MessageModel *m_msg;
+    OptionModel *m_opts;
 
     PlayerProxy *m_thisPlayer;
 };

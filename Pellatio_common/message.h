@@ -32,6 +32,14 @@ struct PELLATIO_COMMONSHARED_EXPORT Message
         C_CONFIRM_MOVE,
         C_RESET_MOVE,
 
+        S_REMIS_OFFERED,
+        S_REMIS_DECLINED,
+
+        C_GIVE_UP,
+        C_OFFER_REMIS,
+        C_ACCEPT_REMIS,
+        C_DECLINE_REMIS,
+
         DONT_UNDERSTAND = 0xFFFFFFFE,
         INVALID_MESSAGE = 0xFFFFFFFF
     } type;

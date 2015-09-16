@@ -17,6 +17,13 @@ public:
     virtual void deactivate() {}
     virtual void commitUpdates();
     virtual void showMove(MoveData move, BoardData board);
+    virtual void askForRemis();
+    virtual void remisDeclined();
+
+    virtual void giveUp();
+    virtual void offerRemis();
+    virtual void acceptRemis();
+    virtual void declineRemis();
 
     void selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm);
     void rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm);

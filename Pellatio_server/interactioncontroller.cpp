@@ -28,6 +28,23 @@ void InteractionController::publishMove(MoveData move, Board board)
     m_player->showMove(move, board.toData());
 }
 
+void InteractionController::publishGameState(GameStateData st)
+{
+    m_player->updateGameState(st);
+    m_player->commitUpdates();
+}
+
+void InteractionController::askForRemis()
+{
+    m_player->askForRemis();
+}
+
+void InteractionController::remisDeclined()
+{
+    m_player->remisDeclined();
+    postMoveUpdates(false);
+}
+
 void InteractionController::selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm)
 {
     const Field *f = m_workingBoard.field(idx);
@@ -103,6 +120,27 @@ void InteractionController::confirmMove()
     m_ctrl->applyMove(m_move);
 }
 
+void InteractionController::giveUp()
+{
+    m_ctrl->playerGivesUp(m_player->thisPlayer());
+}
+
+void InteractionController::offerRemis()
+{
+    m_ctrl->playerOffersRemis(m_player->thisPlayer());
+}
+
+void InteractionController::acceptRemis()
+{
+    m_ctrl->playerAcceptsRemis();
+}
+
+void InteractionController::declineRemis()
+{
+    m_ctrl->playerDeclinesRemis(m_player->thisPlayer());
+    postMoveUpdates(false);
+}
+
 void InteractionController::reset()
 {
     m_workingBoard = m_ctrl->board();
@@ -119,29 +157,14 @@ void InteractionController::postMoveUpdates(bool autoConfirm)
 
 
     //m_player->updateBoard(m_workingBoard.toData());
-    GameStateData st;
+    GameStateData st = m_ctrl->getGameState();
     //st.setBoard(m_workingBoard.toData());
-    st.setBoard(m_ctrl->board().toData());
-    st.setCurrentPlayer(m_ctrl->currentPlayer());
-    st.setGameState(PellatioDefinitions::Running);
-
-    bool hasWinner;
-    PellatioDefinitions::Color winner;
-    QMap<PellatioDefinitions::Color, quint8> points = m_ctrl->countPoints(&hasWinner, &winner);
-    st.setBlackPoints(points[PellatioDefinitions::Black]);
-    st.setRedPoints(points[PellatioDefinitions::Red]);
-
-    if (hasWinner) {
-        st.setHasWinner(true);
-        st.setWinner(winner);
-        st.setGameState(PellatioDefinitions::Winner);
-    }
 
     m_player->updateGameState(st);
 
     InteractionOptionsData iod;
 
-    if (!hasWinner) {
+    if (!st.hasWinner()) {
         // Go on
         updateFields();
 

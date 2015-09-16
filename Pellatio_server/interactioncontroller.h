@@ -2,6 +2,7 @@
 #define INTERACTIONCONTROLLER_H
 
 #include "board.h"
+#include <data/gamestatedata.h>
 #include <data/movedata.h>
 #include "pellatio_server_global.h"
 
@@ -13,14 +14,24 @@ class PELLATIO_SERVERSHARED_EXPORT InteractionController
 public:
     InteractionController(GameController *ctrl, Player *player);
 
+    // OUTGOING: SERVER => CLIENT
     void activate();
     void deactivate();
     void publishMove(MoveData move, Board board);
+    void publishGameState(GameStateData st);
+    void askForRemis();
+    void remisDeclined();
 
+    // INCOMMING: CLIENT => SERVER
     void selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm);
     void rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm);
     void resetMove();
     void confirmMove();
+
+    void giveUp();
+    void offerRemis();
+    void acceptRemis();
+    void declineRemis();
 
 private:
     void reset();

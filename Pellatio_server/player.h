@@ -31,6 +31,9 @@ public:
 
     virtual void commitUpdates() = 0;
 
+    virtual void askForRemis() = 0;
+    virtual void remisDeclined() = 0;
+
 protected:
     PellatioDefinitions::Color m_thisPlayer;
     GameStateData m_gameState;

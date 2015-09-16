@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     playerproxy.cpp \
     dualgameinterface.cpp \
     networkplayerproxy.cpp \
-    messagemodel.cpp
+    messagemodel.cpp \
+    optionmodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -64,4 +65,5 @@ HEADERS += \
     playerproxy.h \
     dualgameinterface.h \
     networkplayerproxy.h \
-    messagemodel.h
+    messagemodel.h \
+    optionmodel.h

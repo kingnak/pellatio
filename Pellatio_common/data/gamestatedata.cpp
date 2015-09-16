@@ -3,7 +3,7 @@
 GameStateData::GameStateData()
     : m_currentPlayer(PellatioDefinitions::Black), m_blackPoints(0), m_redPoints(0),
       m_state(PellatioDefinitions::NotStarted), m_winner(PellatioDefinitions::Black),
-      m_hasWinner(false)
+      m_hasWinner(false)//, m_remisOffered(false)
 {
 }
 
@@ -17,6 +17,7 @@ void operator << (QVariant &data, const GameStateData &target)
     m["state"] << target.m_state;
     m["winner"] << target.m_winner;
     m["hasWinner"] << target.m_hasWinner;
+    //m["isRemisOffered"] << target.m_remisOffered;
     data << m;
 }
 
@@ -31,4 +32,5 @@ void operator >> (const QVariant &data, GameStateData &target)
     m["state"] >> target.m_state;
     m["winner"] >> target.m_winner;
     m["hasWinner"] >> target.m_hasWinner;
+    //m["isRemisOffered"] >> target.m_remisOffered;
 }

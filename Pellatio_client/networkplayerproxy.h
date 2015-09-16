@@ -22,6 +22,11 @@ public:
     virtual void resetMove();
     virtual void confirmMove();
 
+    virtual void giveUp();
+    virtual void offerRemis();
+    virtual void acceptRemis();
+    virtual void declineRemis();
+
 signals:
 
 public slots:

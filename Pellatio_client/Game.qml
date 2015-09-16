@@ -22,6 +22,7 @@ Item {
 
         Column {
             spacing: 5
+            // Rotation
             Row {
                 spacing: 5
                 ImageButton {
@@ -43,13 +44,13 @@ Item {
                 }
             }
 
+            // Confirm / Reset Move
             CheckBox {
                 id: autoCommit
                 text: "Auto Confim"
                 buttonEnabled: confirmModel.autoConfirm
                 onToggled: confirmModel.autoConfirm = on
             }
-
             Button {
                 id: resetMove
                 operation: "Reset"
@@ -58,7 +59,6 @@ Item {
                 enabled: confirmModel.canReset
                 onClicked: confirmModel.reset()
             }
-
             Button {
                 id: confirmMove
                 operation: "Confirm"
@@ -68,6 +68,7 @@ Item {
                 onClicked: confirmModel.confirm()
             }
 
+            // State / Points
             Grid {
                 rows: 4; columns: 2
                 spacing: 5
@@ -107,6 +108,22 @@ Item {
                     text: infoModel.redPoints
                 }
             }
+
+            // Remis / Give up
+            Button {
+                id: offerRemis
+                operation: "Offer Remis"
+                height: 40
+                width: controls.width
+                onClicked: optionModel.offerRemis()
+            }
+            Button {
+                id: giveUp
+                operation: "Give Up"
+                height: 40
+                width: controls.width
+                onClicked: optionModel.giveUp()
+            }
         }
     }
 
@@ -114,17 +131,28 @@ Item {
     height: board.height
 
     GameMessage {
-        onWon: {
-            messageLayer.message = "You have won!"
-            messageLayer.visible = true;
+        id: messageObject
+        onShow: messageLayer.visible = true
+        onHide: messageLayer.visible = false
+        onWon: messageLayer.message = "You have won!"
+        onLost: messageLayer.message = "You have lost!"
+        onRemis: messageLayer.message = "Remis!"
+        onTerminated: messageLayer.message = "Connection was terminated"
+        onMessage: messageLayer.message = msg
+        onQuestion: {
+            messageLayer.message = msg
+            messageLayer_op1.operation = op1
+            messageLayer_op1.visible = true
+            messageLayer_op2.operation = op2
+            messageLayer_op2.visible = true
+            messageLayer_buttons.visible = true
         }
-        onLost: {
-            messageLayer.message = "You have lost!"
-            messageLayer.visible = true;
-        }
-        onMessage: {
-            messageLayer.message = msg;
-            messageLayer.visible = true;
+        onDialog: {
+            messageLayer.message = msg
+            messageLayer_op1.operation = btn
+            messageLayer_op1.visible = true
+            messageLayer_op2.visible = false
+            messageLayer_buttons.visible = true
         }
     }
 
@@ -141,9 +169,40 @@ Item {
             anchors.fill: parent
             color: "#80000000"
         }
-        Text {
-            id: messageLayer_text
+        Column {
             anchors.centerIn: parent
+            width: board.width
+            Text {
+                id: messageLayer_text
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.pixelSize: 24
+                color: "white"
+            }
+
+            Row {
+                width: board.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                spacing: 5
+                id: messageLayer_buttons
+                Button {
+                    width: parent.width/2-5
+                    id: messageLayer_op1
+                    visible: false;
+                    onClicked: {
+                        messageObject.chooseOption1()
+                        messageLayer_buttons.visible = false;
+                    }
+                }
+                Button {
+                    width: parent.width/2-5
+                    id: messageLayer_op2
+                    visible: false;
+                    onClicked: {
+                        messageObject.chooseOption2()
+                        messageLayer_buttons.visible = false;
+                    }
+                }
+            }
         }
     }
 

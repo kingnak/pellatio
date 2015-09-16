@@ -9,10 +9,11 @@
 #include "board.h"
 #include "playerproxy.h"
 #include "messagemodel.h"
+#include "optionmodel.h"
 #include <iostream>
 
 GameInterface::GameInterface(PlayerProxy *thisPlayer, QObject *parent) :
-    QObject(parent), m_thisPlayer(thisPlayer), m_msg(NULL)
+    QObject(parent), m_msg(NULL), m_thisPlayer(thisPlayer)
 {
     m_rotation = new RotationModel(this);
     m_confim = new ConfirmModel(this);
@@ -21,6 +22,7 @@ GameInterface::GameInterface(PlayerProxy *thisPlayer, QObject *parent) :
     m_info = new InfoModel;
     m_preview = new PreviewModel;
     m_anim = new AnimationModel(this);
+    m_opts = new OptionModel(this);
 
     thisPlayerChanged();
     thisPlayer->setGameInterface(this);
@@ -33,22 +35,42 @@ void GameInterface::setMessageModel(MessageModel *msg)
 
 void GameInterface::confirmMove()
 {
-    return m_thisPlayer->confirmMove();
+    m_thisPlayer->confirmMove();
 }
 
 void GameInterface::resetMove()
 {
-    return m_thisPlayer->resetMove();
+    m_thisPlayer->resetMove();
 }
 
 void GameInterface::select(PellatioDefinitions::FieldIndex idx)
 {
-    return m_thisPlayer->selectField(idx, m_confim->autoConfirm());
+    m_thisPlayer->selectField(idx, m_confim->autoConfirm());
 }
 
 void GameInterface::rotateSelected(PellatioDefinitions::Rotation rot)
 {
-    return m_thisPlayer->rotateSelected(rot, m_confim->autoConfirm());
+    m_thisPlayer->rotateSelected(rot, m_confim->autoConfirm());
+}
+
+void GameInterface::giveUp()
+{
+    m_thisPlayer->giveUp();
+}
+
+void GameInterface::offerRemis()
+{
+    m_thisPlayer->offerRemis();
+}
+
+void GameInterface::acceptRemis()
+{
+    m_thisPlayer->acceptRemis();
+}
+
+void GameInterface::declineRemis()
+{
+    m_thisPlayer->declineRemis();
 }
 
 PellatioDefinitions::Color GameInterface::thisPlayer()
@@ -73,4 +95,9 @@ void GameInterface::notifyWinner(PellatioDefinitions::Color winner)
     } else {
         m_msg->lose();
     }
+}
+
+void GameInterface::notifyRemis()
+{
+    m_msg->endRemis();
 }

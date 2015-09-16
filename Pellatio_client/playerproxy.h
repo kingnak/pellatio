@@ -21,6 +21,11 @@ public:
     virtual void resetMove() = 0;
     virtual void confirmMove() = 0;
 
+    virtual void giveUp() = 0;
+    virtual void offerRemis() = 0;
+    virtual void acceptRemis() = 0;
+    virtual void declineRemis() = 0;
+
 protected:
     virtual void updateAllData(const GameStateData &state, const InteractionOptionsData &interactOpts, const MoveData &preview);
 

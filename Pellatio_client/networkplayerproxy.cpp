@@ -12,7 +12,7 @@
 #include "piecemodel.h"
 #include "infomodel.h"
 #include "previewmodel.h"
-
+#include "optionmodel.h"
 #include <QDebug>
 
 NetworkPlayerProxy::NetworkPlayerProxy(QTcpSocket *sock, QObject *parent) :
@@ -58,6 +58,26 @@ void NetworkPlayerProxy::resetMove()
 void NetworkPlayerProxy::confirmMove()
 {
     m_conn->sendMessage(Message::C_CONFIRM_MOVE, QVariant());
+}
+
+void NetworkPlayerProxy::giveUp()
+{
+    m_conn->sendMessage(Message::C_GIVE_UP, QVariant());
+}
+
+void NetworkPlayerProxy::offerRemis()
+{
+    m_conn->sendMessage(Message::C_OFFER_REMIS, QVariant());
+}
+
+void NetworkPlayerProxy::acceptRemis()
+{
+    m_conn->sendMessage(Message::C_ACCEPT_REMIS, QVariant());
+}
+
+void NetworkPlayerProxy::declineRemis()
+{
+    m_conn->sendMessage(Message::C_DECLINE_REMIS, QVariant());
 }
 
 void NetworkPlayerProxy::sendVersion()
@@ -123,6 +143,14 @@ void NetworkPlayerProxy::handleMessage(const Message &msg)
         m_inter->animateMove(move);
         break;
     }
+
+    case Message::S_REMIS_OFFERED:
+        m_inter->optionModel()->remisOffered();
+        break;
+
+    case Message::S_REMIS_DECLINED:
+        m_inter->optionModel()->remisDeclined();
+        break;
 
     default:
         qDebug() << "Did not understand message" << msg.type;

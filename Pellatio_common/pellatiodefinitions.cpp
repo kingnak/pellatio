@@ -1,6 +1,15 @@
 #include "pellatiodefinitions.h"
 
 
+PellatioDefinitions::Color PellatioDefinitions::opponent(PellatioDefinitions::Color clr)
+{
+    if (clr == PellatioDefinitions::Black) {
+        return PellatioDefinitions::Red;
+    } else {
+        return PellatioDefinitions::Black;
+    }
+}
+
 PellatioDefinitions::Direction PellatioDefinitions::rotated(PellatioDefinitions::Direction d, PellatioDefinitions::Rotation r, quint8 count)
 {
     count %= 8;

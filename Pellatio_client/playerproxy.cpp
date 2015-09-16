@@ -32,5 +32,7 @@ void PlayerProxy::updateAllData(const GameStateData &state, const InteractionOpt
 
     if (state.hasWinner()) {
         m_inter->notifyWinner(state.winner());
+    } else if (state.state() == PellatioDefinitions::Remis) {
+        m_inter->notifyRemis();
     }
 }

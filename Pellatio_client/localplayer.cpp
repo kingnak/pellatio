@@ -6,6 +6,7 @@
 #include "piecemodel.h"
 #include "infomodel.h"
 #include "previewmodel.h"
+#include "optionmodel.h"
 #include "interactioncontroller.h"
 
 LocalPlayer::LocalPlayer(PellatioDefinitions::Color playerColor)
@@ -25,7 +26,38 @@ void LocalPlayer::commitUpdates()
 
 void LocalPlayer::showMove(MoveData move, BoardData board)
 {
+    Q_UNUSED(board)
     m_inter->animateMove(move);
+}
+
+void LocalPlayer::askForRemis()
+{
+    m_inter->optionModel()->remisOffered();
+}
+
+void LocalPlayer::remisDeclined()
+{
+    m_inter->optionModel()->remisDeclined();
+}
+
+void LocalPlayer::giveUp()
+{
+    m_ctrl->giveUp();
+}
+
+void LocalPlayer::offerRemis()
+{
+    m_ctrl->offerRemis();
+}
+
+void LocalPlayer::acceptRemis()
+{
+    m_ctrl->acceptRemis();
+}
+
+void LocalPlayer::declineRemis()
+{
+    m_ctrl->declineRemis();
 }
 
 void LocalPlayer::selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm)

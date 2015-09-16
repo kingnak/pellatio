@@ -93,14 +93,65 @@ bool GameController::start()
     return false;
 }
 
+void GameController::playerGivesUp(PellatioDefinitions::Color player)
+{
+    GameStateData st = getGameState();
+    st.setGameState(PellatioDefinitions::Winner);
+    st.setHasWinner(true);
+    st.setWinner(PellatioDefinitions::opponent(player));
+
+    foreach (InteractionController *in, m_interactors.values()) {
+        in->publishGameState(st);
+    }
+}
+
+void GameController::playerOffersRemis(PellatioDefinitions::Color player)
+{
+    //GameStateData st = getGameState();
+    //st.setRemisOffered(true);
+    //m_interactors[PellatioDefinitions::opponent(player)]->publishGameState(st);
+    m_interactors[PellatioDefinitions::opponent(player)]->askForRemis();
+}
+
+void GameController::playerAcceptsRemis()
+{
+    GameStateData st = getGameState();
+    st.setGameState(PellatioDefinitions::Remis);
+    foreach (InteractionController *in, m_interactors.values()) {
+        in->publishGameState(st);
+    }
+}
+
+void GameController::playerDeclinesRemis(PellatioDefinitions::Color player)
+{
+    m_interactors[PellatioDefinitions::opponent(player)]->remisDeclined();
+}
+
+GameStateData GameController::getGameState() const
+{
+    GameStateData st;
+    st.setBoard(m_board.toData());
+    st.setCurrentPlayer(m_curPlayer);
+    st.setGameState(PellatioDefinitions::Running);
+
+    bool hasWinner;
+    PellatioDefinitions::Color winner;
+    QMap<PellatioDefinitions::Color, quint8> points = countPoints(&hasWinner, &winner);
+    st.setBlackPoints(points[PellatioDefinitions::Black]);
+    st.setRedPoints(points[PellatioDefinitions::Red]);
+
+    if (hasWinner) {
+        st.setHasWinner(true);
+        st.setWinner(winner);
+        st.setGameState(PellatioDefinitions::Winner);
+    }
+    return st;
+}
+
 void GameController::changePlayer()
 {
     PellatioDefinitions::Color oldPlayer = m_curPlayer;
-    if (m_curPlayer == PellatioDefinitions::Black) {
-        m_curPlayer = PellatioDefinitions::Red;
-    } else {
-        m_curPlayer = PellatioDefinitions::Black;
-    }
+    m_curPlayer = PellatioDefinitions::opponent(m_curPlayer);
     m_interactors[oldPlayer]->deactivate();
     m_interactors[m_curPlayer]->activate();
 }

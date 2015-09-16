@@ -29,6 +29,9 @@ public:
     bool hasWinner() const { return m_hasWinner; }
     void setHasWinner(bool hasWinner) { m_hasWinner = hasWinner; }
 
+    //bool isRemisOffered() const { return m_remisOffered; }
+    //void setRemisOffered(bool offered) { m_remisOffered = offered; }
+
 protected:
     PellatioDefinitions::Color m_currentPlayer;
     BoardData m_board;
@@ -37,6 +40,7 @@ protected:
     PellatioDefinitions::GameState m_state;
     PellatioDefinitions::Color m_winner;
     bool m_hasWinner;
+    //bool m_remisOffered;
 
     DECLARE_SERIALIZABLE_EXPORT(PELLATIO_COMMONSHARED_EXPORT, GameStateData);
 };

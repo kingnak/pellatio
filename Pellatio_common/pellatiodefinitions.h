@@ -24,6 +24,8 @@ public:
         Black
     };
 
+    static PellatioDefinitions::Color opponent(PellatioDefinitions::Color clr);
+
     enum Rotation {
         None = 0,
         ClockWise = 1,

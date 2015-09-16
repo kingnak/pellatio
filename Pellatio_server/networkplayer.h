@@ -15,6 +15,8 @@ public:
     virtual void deactivate();
     virtual void showMove(MoveData move, BoardData board);
     virtual void commitUpdates();
+    virtual void askForRemis();
+    virtual void remisDeclined();
 
 private slots:
     void handleMessage(const Message &msg);
