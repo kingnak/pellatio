@@ -121,7 +121,9 @@ void InteractionController::confirmMove()
     if (!isCurrentPlayerActive())
         return;
 
-    m_ctrl->applyMove(m_move);
+    MoveData toApply = m_move;
+    m_move.clear();
+    m_ctrl->applyMove(toApply);
 }
 
 void InteractionController::giveUp()

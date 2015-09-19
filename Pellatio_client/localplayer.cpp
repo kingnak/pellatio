@@ -27,6 +27,7 @@ void LocalPlayer::commitUpdates()
 void LocalPlayer::showMove(MoveData move, BoardData board)
 {
     Q_UNUSED(board)
+    // disable all options
     m_inter->animateMove(move);
 }
 
@@ -82,5 +83,8 @@ void LocalPlayer::resetMove()
 
 void LocalPlayer::confirmMove()
 {
+    InteractionOptionsData iod;
+    m_inter->confirmModel()->updateData(iod);
+    m_inter->rotationModel()->updateData(iod);
     m_ctrl->confirmMove();
 }

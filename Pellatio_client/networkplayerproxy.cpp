@@ -57,6 +57,9 @@ void NetworkPlayerProxy::resetMove()
 
 void NetworkPlayerProxy::confirmMove()
 {
+    InteractionOptionsData iod;
+    m_inter->confirmModel()->updateData(iod);
+    m_inter->rotationModel()->updateData(iod);
     m_conn->sendMessage(Message::C_CONFIRM_MOVE, QVariant());
 }
 

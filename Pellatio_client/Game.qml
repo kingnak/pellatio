@@ -52,20 +52,20 @@ Item {
                 onToggled: confirmModel.autoConfirm = on
             }
             Button {
-                id: resetMove
-                operation: "Reset"
-                height: 40
-                width: controls.width
-                enabled: confirmModel.canReset
-                onClicked: confirmModel.reset()
-            }
-            Button {
                 id: confirmMove
                 operation: "Confirm"
                 height: 40
                 width: controls.width
                 enabled: confirmModel.canConfirm
                 onClicked: confirmModel.confirm()
+            }
+            Button {
+                id: resetMove
+                operation: "Reset"
+                height: 40
+                width: controls.width
+                enabled: confirmModel.canReset
+                onClicked: confirmModel.reset()
             }
 
             // State / Points
