@@ -25,6 +25,8 @@ public:
     virtual void acceptRemis();
     virtual void declineRemis();
 
+    virtual void notifyTerminatedConnection();
+
     void selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm);
     void rotateSelected(PellatioDefinitions::Rotation dir, bool autoConfirm);
     void resetMove();

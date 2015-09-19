@@ -35,6 +35,8 @@ public:
     QMap<PellatioDefinitions::Color, quint8> countPoints(bool *hasWinner = NULL, PellatioDefinitions::Color *winner = NULL)  const;
     //bool hasWinner(PellatioDefinitions::Color *c = NULL) const;
 
+    void connectionTerminated();
+
 private:
     QList<MoveData::MoveStep> transformMove(MoveData::MoveStep move);
 

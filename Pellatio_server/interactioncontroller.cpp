@@ -78,8 +78,12 @@ void InteractionController::selectField(PellatioDefinitions::FieldIndex idx, boo
     }
 
     // Not movable to, or piece can be changed.
-    // Set piece active
-    m_selectedPieceId = f->pieceId();
+    // Set piece active, or deselect if selected clicked
+    if (m_selectedPieceId == f->pieceId()) {
+        m_selectedPieceId = QString::null;
+    } else {
+        m_selectedPieceId = f->pieceId();
+    }
     postMoveUpdates(autoConfirm);
 }
 
@@ -139,6 +143,16 @@ void InteractionController::declineRemis()
 {
     m_ctrl->playerDeclinesRemis(m_player->thisPlayer());
     postMoveUpdates(false);
+}
+
+void InteractionController::connectionTerminated()
+{
+    m_ctrl->connectionTerminated();
+}
+
+void InteractionController::notifyTerminatedConnection()
+{
+    m_player->notifyTerminatedConnection();
 }
 
 void InteractionController::reset()

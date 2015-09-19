@@ -54,6 +54,7 @@ public:
     virtual void animateMove(MoveData move);
     virtual void notifyWinner(PellatioDefinitions::Color winner);
     virtual void notifyRemis();
+    virtual void connectionTerminated();
 
 protected:
     FieldModel *m_fields;

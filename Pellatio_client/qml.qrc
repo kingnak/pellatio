@@ -20,5 +20,9 @@
         <file>images/rk.png</file>
         <file>ImageButton.qml</file>
         <file>CheckBox.qml</file>
+        <file>images/floortile0.png</file>
+        <file>images/floortile1.png</file>
+        <file>images/floortile2.png</file>
+        <file>images/floortile3.png</file>
     </qresource>
 </RCC>

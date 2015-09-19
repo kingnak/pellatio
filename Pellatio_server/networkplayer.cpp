@@ -5,7 +5,7 @@ NetworkPlayer::NetworkPlayer(ClientConnection *conn, PellatioDefinitions::Color 
     QObject(parent), Player(color), m_conn(conn)
 {
     connect(m_conn, SIGNAL(messageReceived(Message)), this, SLOT(handleMessage(Message)));
-
+    connect(m_conn, SIGNAL(shutdown()), this, SLOT(shutdown()));
 }
 
 void NetworkPlayer::activate()
@@ -43,6 +43,12 @@ void NetworkPlayer::askForRemis()
 void NetworkPlayer::remisDeclined()
 {
     m_conn->sendMessage(Message::S_REMIS_DECLINED, QVariant());
+}
+
+void NetworkPlayer::notifyTerminatedConnection()
+{
+    //if (m_conn->)
+    //m_conn->close();
 }
 
 void NetworkPlayer::handleMessage(const Message &msg)
@@ -86,4 +92,9 @@ void NetworkPlayer::handleMessage(const Message &msg)
         m_conn->sendMessage(Message::DONT_UNDERSTAND, QVariant());
         break;
     }
+}
+
+void NetworkPlayer::shutdown()
+{
+    m_ctrl->connectionTerminated();
 }

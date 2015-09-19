@@ -13,7 +13,11 @@ Rectangle {
             id: field_repeater
             model: fieldModel
 
-            Rectangle {
+            Image {
+                source: {
+                    var c = Math.floor(index*17+index*index/3)%4;
+                    return "/images/floortile"+c+".png"
+                }
                 id: field
                 width: visualDef.tileSize
                 height: visualDef.tileSize
@@ -26,34 +30,40 @@ Rectangle {
                     }
                 }
 
-                states: [
-                    State { name: "normal"; PropertyChanges {
-                            target: field; color: "antiquewhite"
-                        }
-                    },
-                    State { name: "movable"; PropertyChanges {
-                            target: field; color: "lightblue"
-                        }
-                    },
-                    State { name: "paradeMovable"; PropertyChanges {
-                            target: field; color: "#D6A296"
-                        }
-                    },
-                    State { name: "parade"; PropertyChanges {
-                            target: field; color: "tomato"
-                        }
-                    },
-                    State { name: "selected"; PropertyChanges {
-                            target: field; color: "yellowgreen"
-                        }
-                    },
-                    State { name: "selectable"; PropertyChanges {
-                            target: field; color: "lightgreen"
-                        }
-                    }
-                ]
-                //state: isMovableTo ? "movable" : "normal"
                 state: stateStringFromFlags
+                Rectangle {
+                    anchors.fill: parent;
+                    state: parent.state
+                    opacity: 0.3
+                    id: fieldOverlay
+                    states: [
+                        State { name: "normal"; PropertyChanges {
+                                target: fieldOverlay; color: "transparent"
+                            }
+                        },
+                        State { name: "movable"; PropertyChanges {
+                                target: fieldOverlay; color: "lightblue"
+                            }
+                        },
+                        State { name: "paradeMovable"; PropertyChanges {
+                                target: fieldOverlay; color: "#D6A296"
+                            }
+                        },
+                        State { name: "parade"; PropertyChanges {
+                                target: fieldOverlay; color: "tomato"
+                            }
+                        },
+                        State { name: "selected"; PropertyChanges {
+                                target: fieldOverlay; color: "yellowgreen"
+                            }
+                        },
+                        State { name: "selectable"; PropertyChanges {
+                                target: fieldOverlay; color: "lightgreen"
+                            }
+                        }
+                    ]
+                }
+                //state: isMovableTo ? "movable" : "normal"
             }
         }
     }

@@ -14,7 +14,7 @@ void OptionModel::offerRemis()
 
 void OptionModel::giveUp()
 {
-    m_inter->messageModel()->ask("Really offer Remis?", "Yes", "No", this, "confirmGiveUp", "dontGiveUp");
+    m_inter->messageModel()->ask("Really give up?", "Yes", "No", this, "confirmGiveUp", "dontGiveUp");
 }
 
 void OptionModel::confirmOfferRemis()

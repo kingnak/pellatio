@@ -89,7 +89,7 @@ void NetworkPlayerProxy::sendVersion()
 
 void NetworkPlayerProxy::shutdown()
 {
-
+    m_inter->connectionTerminated();
 }
 
 void NetworkPlayerProxy::handleMessage(const Message &msg)

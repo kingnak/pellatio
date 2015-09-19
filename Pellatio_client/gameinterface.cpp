@@ -101,3 +101,8 @@ void GameInterface::notifyRemis()
 {
     m_msg->endRemis();
 }
+
+void GameInterface::connectionTerminated()
+{
+    m_msg->terminate();
+}

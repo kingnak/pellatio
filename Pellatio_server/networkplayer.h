@@ -17,9 +17,11 @@ public:
     virtual void commitUpdates();
     virtual void askForRemis();
     virtual void remisDeclined();
+    virtual void notifyTerminatedConnection();
 
 private slots:
     void handleMessage(const Message &msg);
+    void shutdown();
 
 private:
     ClientConnection *m_conn;

@@ -35,6 +35,7 @@ signals:
 public slots:
     void chooseOption1();
     void chooseOption2();
+    void confirmDialog();
 
 private:
     QByteArray m_func1;

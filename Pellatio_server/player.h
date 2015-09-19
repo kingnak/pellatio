@@ -34,6 +34,8 @@ public:
     virtual void askForRemis() = 0;
     virtual void remisDeclined() = 0;
 
+    virtual void notifyTerminatedConnection() = 0;
+
 protected:
     PellatioDefinitions::Color m_thisPlayer;
     GameStateData m_gameState;

@@ -60,6 +60,11 @@ void LocalPlayer::declineRemis()
     m_ctrl->declineRemis();
 }
 
+void LocalPlayer::notifyTerminatedConnection()
+{
+    m_inter->connectionTerminated();
+}
+
 void LocalPlayer::selectField(PellatioDefinitions::FieldIndex idx, bool autoConfirm)
 {
     m_ctrl->selectField(idx, autoConfirm);

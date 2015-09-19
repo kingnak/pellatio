@@ -5,7 +5,7 @@ Item {
     Item {
         id: visualDef
         property int tileSize: 50
-        property int tileSpace: 5
+        property int tileSpace: 0
     }
 
     Board {
@@ -133,26 +133,26 @@ Item {
     GameMessage {
         id: messageObject
         onShow: messageLayer.visible = true
-        onHide: messageLayer.visible = false
+        onHide: {
+            messageLayer.visible = false;
+            messageLayer_dialog.visible = false;
+            messageLayer_question.visible = false;
+        }
         onWon: messageLayer.message = "You have won!"
         onLost: messageLayer.message = "You have lost!"
         onRemis: messageLayer.message = "Remis!"
         onTerminated: messageLayer.message = "Connection was terminated"
         onMessage: messageLayer.message = msg
         onQuestion: {
-            messageLayer.message = msg
-            messageLayer_op1.operation = op1
-            messageLayer_op1.visible = true
-            messageLayer_op2.operation = op2
-            messageLayer_op2.visible = true
-            messageLayer_buttons.visible = true
+            messageLayer.message = msg;
+            messageLayer_op1.operation = op1;
+            messageLayer_op2.operation = op2;
+            messageLayer_question.visible = true;
         }
         onDialog: {
-            messageLayer.message = msg
-            messageLayer_op1.operation = btn
-            messageLayer_op1.visible = true
-            messageLayer_op2.visible = false
-            messageLayer_buttons.visible = true
+            messageLayer.message = msg;
+            messageLayer_ok.operation = btn;
+            messageLayer_dialog.visible = true;
         }
     }
 
@@ -179,27 +179,40 @@ Item {
                 color: "white"
             }
 
+            Item {
+                width: board.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: messageLayer_dialog
+                visible: false
+                height:  messageLayer_ok.height
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: board.width/2-5
+                    id: messageLayer_ok
+                    onClicked: {
+                        messageObject.confirmDialog();
+                    }
+                }
+            }
+
             Row {
                 width: board.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 spacing: 5
-                id: messageLayer_buttons
+                visible: false
+                id: messageLayer_question
                 Button {
                     width: parent.width/2-5
                     id: messageLayer_op1
-                    visible: false;
                     onClicked: {
-                        messageObject.chooseOption1()
-                        messageLayer_buttons.visible = false;
+                        messageObject.chooseOption1();
                     }
                 }
                 Button {
                     width: parent.width/2-5
                     id: messageLayer_op2
-                    visible: false;
                     onClicked: {
-                        messageObject.chooseOption2()
-                        messageLayer_buttons.visible = false;
+                        messageObject.chooseOption2();
                     }
                 }
             }

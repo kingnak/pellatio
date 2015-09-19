@@ -215,6 +215,13 @@ QMap<PellatioDefinitions::Color, quint8> GameController::countPoints(bool *hasWi
     return ret;
 }
 
+void GameController::connectionTerminated()
+{
+    foreach (InteractionController *in, m_interactors) {
+        in->notifyTerminatedConnection();
+    }
+}
+
 QList<MoveData::MoveStep> GameController::transformMove(MoveData::MoveStep move)
 {
     if (move.type == MoveData::MoveStep::Rotate)

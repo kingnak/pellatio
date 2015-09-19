@@ -67,3 +67,12 @@ void MessageModel::chooseOption2()
     m_recv = NULL;
     QMetaObject::invokeMethod(obj, m_func2.data());
 }
+
+void MessageModel::confirmDialog()
+{
+    emit hide();
+    QObject *obj = m_recv;
+    m_recv = NULL;
+    if (obj)
+        QMetaObject::invokeMethod(obj, m_func1.data());
+}

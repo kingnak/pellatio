@@ -33,6 +33,9 @@ public:
     void acceptRemis();
     void declineRemis();
 
+    void connectionTerminated();
+    void notifyTerminatedConnection();
+
 private:
     void reset();
     void postMoveUpdates(bool autoConfirm);
