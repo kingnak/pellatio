@@ -40,6 +40,21 @@ Item {
                     networkChooser.visible = true;
                 }
             }
+            Button {
+                operation: "Tutorial"
+                width: parent.width - 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                enabled: false
+            }
+            Button {
+                operation: "Test Game"
+                width: parent.width - 10
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: window.allowTestBoard
+                onClicked: {
+                    window.startTestWindow()
+                }
+            }
         }
 
         Column {

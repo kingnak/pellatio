@@ -16,6 +16,13 @@ GameController::~GameController()
     qDeleteAll(m_interactors.values());
 }
 
+#ifdef WITH_TESTBOARD
+void GameController::loadTestBoard(QString boardFile)
+{
+    m_board.initializeTestBoard(boardFile);
+}
+#endif
+
 bool GameController::applyMove(MoveData move)
 {
     MoveData finishedMove;

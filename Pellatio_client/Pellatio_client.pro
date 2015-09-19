@@ -1,4 +1,6 @@
 
+include(../Pellatio_global.pri)
+
 QT       += network
 
 # Additional import path used to resolve QML modules in Creator's code model

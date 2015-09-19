@@ -1,5 +1,12 @@
 #include "board.h"
 
+#ifdef WITH_TESTBOARD
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
+#include <QDebug>
+#endif
+
 Board::Board()
 {
 }
@@ -69,6 +76,75 @@ void Board::initializeStartBoard()
     }
 
 }
+
+#ifdef WITH_TESTBOARD
+void Board::initializeTestBoard(QString boardFile)
+{
+    initializeEmptyBoard();
+    QFile f(boardFile);
+    if (!f.open(QIODevice::ReadOnly)) {
+        qCritical() << "Cannot open" << boardFile;
+        return;
+    }
+    QTextStream ts(&f);
+    QString boardStr = ts.readAll();
+    f.close();
+
+
+    QStringList lines = boardStr.split("\n");
+    lines.replaceInStrings("\r", "");
+    if (lines.size() > 9) {
+        // Special case: If 10 lines, and last is empty, no warning
+        if (!(lines.size() == 10 && lines[9].trimmed().isEmpty())) {
+            qWarning() << "Boardfile has more than 9 lines. Additional Lines are ignored";
+        }
+        lines.erase(lines.begin()+9, lines.end());
+    }
+
+    QRegExp rxPiece("([rb])([APKG])(\\d)?");
+    for (int r = 0; r < lines.size(); ++r) {
+        QStringList parts = lines[r].split("\t");
+        if (parts.size() > 9) {
+            qWarning() << "Line" << (r+1) << "has more than 9 Fields. Additional Fields are ignored";
+            parts.erase(parts.begin()+9, parts.end());
+        }
+
+        for (int c = 0; c < parts.size(); ++c) {
+            if (parts[c].isEmpty()) continue;
+            if (!rxPiece.exactMatch(parts[c])) {
+                qWarning() << "Cannot parse" << parts[c] << "(Line" << r << ", Field" << c <<")";
+                continue;
+            }
+
+            QChar clr = rxPiece.cap(1)[0];
+            QChar typ = rxPiece.cap(2)[0];
+            int dir = 0;
+            if (rxPiece.captureCount() > 2) {
+                dir = rxPiece.cap(3).toInt();
+            }
+
+            PellatioDefinitions::Color color = (clr == 'r') ? PellatioDefinitions::Red : PellatioDefinitions::Black;
+            PellatioDefinitions::PieceType pieceType;
+            switch (typ.unicode()) {
+            case 'A': pieceType = PellatioDefinitions::Aggressor; break;
+            case 'P': pieceType = PellatioDefinitions::Phalangit; break;
+            case 'K': pieceType = PellatioDefinitions::Kavalerist; break;
+            case 'G': pieceType = PellatioDefinitions::General; break;
+            }
+            PellatioDefinitions::Direction direction = static_cast<PellatioDefinitions::Direction> (dir%8);
+
+            Piece p("", color, pieceType, direction, BoardData::indexForXandY(c, r));
+            p.generateId();
+
+            m_pieces[p.id()] = p;
+        }
+    }
+
+    foreach (QString id, m_pieces.keys()) {
+        placePiece(&m_pieces[id], &m_fields[m_pieces[id].field()]);
+    }
+}
+#endif
 
 BoardData Board::toData() const
 {

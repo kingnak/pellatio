@@ -13,6 +13,9 @@ public:
 
     void initializeEmptyBoard();
     void initializeStartBoard();
+#ifdef WITH_TESTBOARD
+    void initializeTestBoard(QString boardFile);
+#endif
 
     BoardData toData() const;
     QList<FieldData> getFieldData() const;

@@ -13,6 +13,9 @@ public:
     ~GameController();
 
     Board board() const { return m_board; }
+#ifdef WITH_TESTBOARD
+    void loadTestBoard(QString boardFile);
+#endif
 
     bool applyMove(MoveData move);
 

@@ -16,16 +16,25 @@ class PellatioQMLDefinitions;
 class PellatioMainWindow : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool allowTestBoard READ allowTestBoard NOTIFY allowTestBoardChanged_Dummy)
 public:
     explicit PellatioMainWindow(QObject *parent = 0);
     ~PellatioMainWindow();
 
+    bool allowTestBoard() const;
+
 public slots:
     void startLocalSingleWindow();
     void startLocalMultipleWindow();
+#ifdef WITH_TESTBOARD
+    void startTestWindow();
+#endif
     void hostGame();
     void jointGame(QString host);
     void start();
+
+signals:
+    void allowTestBoardChanged_Dummy();
 
 private slots:
 

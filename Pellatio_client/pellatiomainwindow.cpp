@@ -55,6 +55,15 @@ PellatioMainWindow::~PellatioMainWindow()
     delete m_startWindow;
 }
 
+bool PellatioMainWindow::allowTestBoard() const
+{
+#ifdef WITH_TESTBOARD
+    return true;
+#else
+    return false;
+#endif
+}
+
 void PellatioMainWindow::startLocalSingleWindow()
 {
     m_startWindow->close();
@@ -133,6 +142,36 @@ void PellatioMainWindow::startLocalMultipleWindow()
     setupInterface(*viewer1, lgi1, m_defs);
     setupInterface(*viewer2, lgi2, m_defs);
 }
+
+#ifdef WITH_TESTBOARD
+void PellatioMainWindow::startTestWindow()
+{
+    // COPIED FROM SINGLE WINDOW MODE
+    m_startWindow->close();
+    m_startWindow->deleteLater();
+    m_startWindow = NULL;
+
+    m_game = new GameController;
+    m_game->loadTestBoard("testboard.txt");
+    LocalPlayer *p1 = new LocalPlayer(PellatioDefinitions::Red);
+    m_game->addPlayer(p1);
+    LocalPlayer *p2 = new LocalPlayer(PellatioDefinitions::Black);
+    m_game->addPlayer(p2);
+
+    m_players << p1 << p2;
+
+    DualGameInterface *lgi = new DualGameInterface(p2, p1);
+    m_interfaces << lgi;
+
+    m_game->start();
+
+    QtQuick1ApplicationViewer *viewer = new QtQuick1ApplicationViewer;
+
+    m_windows << viewer;
+
+    setupInterface(*viewer, lgi, m_defs);
+}
+#endif
 
 void PellatioMainWindow::hostGame()
 {

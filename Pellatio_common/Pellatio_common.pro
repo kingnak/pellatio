@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+include(../Pellatio_global.pri)
+
 QT       += network
 
 QT       -= gui
