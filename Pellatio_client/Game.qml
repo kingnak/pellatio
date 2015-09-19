@@ -5,7 +5,7 @@ Item {
     Item {
         id: visualDef
         property int tileSize: 50
-        property int tileSpace: 0
+        property int tileSpace: 5
     }
 
     Board {
