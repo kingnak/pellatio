@@ -5,13 +5,6 @@ FieldModel::FieldModel(GameInterface *ctrl, QObject *parent)
 :   QAbstractListModel(parent),
     m_ctrl(ctrl)
 {
-    QHash<int, QByteArray> roles;
-    roles[movableRole] = "isMovableTo";
-    roles[selectableRole] = "isSelectable";
-    roles[selectedRole] = "isSelected";
-    roles[paradeRole] = "isParade";
-    roles[stateStringRole] = "stateStringFromFlags";
-    setRoleNames(roles);
 }
 
 int FieldModel::rowCount(const QModelIndex &index) const
@@ -35,6 +28,7 @@ QVariant FieldModel::data(const QModelIndex &index, int role) const
 
 void FieldModel::updateData(QList<FieldData> fields)
 {
+    beginResetModel();
     /*
     bool updating = false;
     if (m_fields.size() != fields.size()) {
@@ -57,7 +51,18 @@ void FieldModel::updateData(QList<FieldData> fields)
     }
     */
     m_fields = fields;
-    reset();
+    endResetModel();
+}
+
+QHash<int, QByteArray> FieldModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[movableRole] = "isMovableTo";
+    roles[selectableRole] = "isSelectable";
+    roles[selectedRole] = "isSelected";
+    roles[paradeRole] = "isParade";
+    roles[stateStringRole] = "stateStringFromFlags";
+    return roles;
 }
 
 void FieldModel::select(int idx)

@@ -7,11 +7,6 @@
 FlankModel::FlankModel(QObject *parent) :
     QAbstractListModel(parent)
 {
-    QHash<int, QByteArray> roles;
-    roles[fieldRole] = "field";
-    roles[directionRole] = "direction";
-    setRoleNames(roles);
-
     /*
     PieceData a("A", PellatioDefinitions::Red, PellatioDefinitions::Aggressor, PellatioDefinitions::North, BoardData::indexForXandY(4,4));
     PieceData p("B", PellatioDefinitions::Red, PellatioDefinitions::Aggressor, PellatioDefinitions::North, BoardData::indexForXandY(4,3));
@@ -37,12 +32,22 @@ QVariant FlankModel::data(const QModelIndex &index, int role) const
 
 void FlankModel::updateData(QList<MoveData::MoveStep> flanks)
 {
+    beginResetModel();
     m_data = flanks;
-    reset();
+    endResetModel();
 }
 
 void FlankModel::clear()
 {
+    beginResetModel();
     m_data.clear();
-    reset();
+    endResetModel();
+}
+
+QHash<int, QByteArray> FlankModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[fieldRole] = "field";
+    roles[directionRole] = "direction";
+    return roles;
 }

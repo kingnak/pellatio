@@ -21,6 +21,8 @@ public:
     void updateData(QList<MoveData::MoveStep> flanks);
     void clear();
 
+    QHash<int, QByteArray> roleNames() const;
+
 signals:
 
 public slots:

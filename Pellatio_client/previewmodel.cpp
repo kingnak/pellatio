@@ -3,13 +3,6 @@
 PreviewModel::PreviewModel(QObject *parent) :
     QAbstractListModel(parent)
 {
-    QHash<int, QByteArray> roles;
-    roles[typeRole] = "type";
-    roles[fieldRole] = "field";
-    roles[directionRole] = "direction";
-    roles[lengthRole] = "length";
-    roles[rotationRole] = "rotationDirection";
-    setRoleNames(roles);
 }
 
 int PreviewModel::rowCount(const QModelIndex &index) const
@@ -34,6 +27,18 @@ QVariant PreviewModel::data(const QModelIndex &index, int role) const
 
 void PreviewModel::updateData(MoveData data)
 {
+    beginResetModel();
     m_data = data;
-    reset();
+    endResetModel();
+}
+
+QHash<int, QByteArray> PreviewModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[typeRole] = "type";
+    roles[fieldRole] = "field";
+    roles[directionRole] = "direction";
+    roles[lengthRole] = "length";
+    roles[rotationRole] = "rotationDirection";
+    return roles;
 }

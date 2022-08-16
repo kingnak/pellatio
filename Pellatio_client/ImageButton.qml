@@ -1,5 +1,3 @@
-import QtQuick 1.1
-
 /****************************************************************************
 **
 ** Copyright (C) 2014 Digia Plc and/or its subsidiary(-ies).
@@ -19,7 +17,7 @@ import QtQuick 1.1
 **
 ****************************************************************************/
 
-import QtQuick 1.1
+import QtQuick 2.3
 
 BorderImage {
     id: button

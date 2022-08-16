@@ -44,7 +44,7 @@ private:
     GameController *m_game;
     QList<Player *> m_players;
     QList<GameInterface *> m_interfaces;
-    QList<QWidget *> m_windows;
+    QList<QWindow *> m_windows;
     PellatioQMLDefinitions *m_defs;
 
     QtQuick1ApplicationViewer *m_startWindow;

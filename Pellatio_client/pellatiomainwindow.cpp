@@ -1,7 +1,7 @@
 #include "pellatiomainwindow.h"
-#include <QDeclarativeView>
-#include <QDeclarativeItem>
-#include <QDeclarativeContext>
+#include <QQuickView>
+#include <QQuickItem>
+#include <QQmlContext>
 
 #include "dualgameinterface.h"
 #include "rotationmodel.h"

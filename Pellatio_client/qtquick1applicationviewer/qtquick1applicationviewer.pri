@@ -5,7 +5,7 @@
 # It is recommended not to modify this file, since newer versions of Qt Creator
 # may offer an updated version of it.
 
-QT += declarative
+#QT += declarative
 
 SOURCES += $$PWD/qtquick1applicationviewer.cpp
 HEADERS += $$PWD/qtquick1applicationviewer.h

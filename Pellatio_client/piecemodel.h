@@ -38,6 +38,8 @@ public:
         bool m_isCaptured;
     };
 
+    QHash<int, QByteArray> roleNames() const;
+
 private:
     int findPiece(QString id);
 

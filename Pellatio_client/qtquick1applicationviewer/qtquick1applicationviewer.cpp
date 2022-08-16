@@ -10,16 +10,16 @@
 
 #include "qtquick1applicationviewer.h"
 
-#include <QDeclarativeComponent>
-#include <QDeclarativeEngine>
-#include <QDeclarativeContext>
+#include <QQmlComponent>
+#include <QQmlEngine>
+#include <QQmlContext>
 
 
-QtQuick1ApplicationViewer::QtQuick1ApplicationViewer(QWidget *parent)
-    : QDeclarativeView(parent)
+QtQuick1ApplicationViewer::QtQuick1ApplicationViewer(QWindow *parent)
+    : QQuickView(parent)
 {
     connect(engine(), SIGNAL(quit()), SLOT(close()));
-    setResizeMode(QDeclarativeView::SizeRootObjectToView);
+    setResizeMode(QQuickView::SizeRootObjectToView);
 }
 
 QtQuick1ApplicationViewer::~QtQuick1ApplicationViewer()

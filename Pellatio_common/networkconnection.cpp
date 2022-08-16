@@ -1,6 +1,7 @@
 #include "networkconnection.h"
 #include <QTimerEvent>
 #include <QtEndian>
+#include <QDataStream>
 #include <QThread>
 
 NetworkConnection::NetworkConnection(int socketDescriptor, QObject *parent)

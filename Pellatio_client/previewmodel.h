@@ -22,6 +22,8 @@ public:
 
     void updateData(MoveData data);
 
+    QHash<int, QByteArray> roleNames() const;
+
 private:
     MoveData m_data;
 

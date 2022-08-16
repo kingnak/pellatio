@@ -11,9 +11,9 @@
 #ifndef QTQUICK1APPLICATIONVIEWER_H
 #define QTQUICK1APPLICATIONVIEWER_H
 
-#include <QDeclarativeView>
+#include <QQuickView>
 
-class QtQuick1ApplicationViewer : public QDeclarativeView
+class QtQuick1ApplicationViewer : public QQuickView
 {
     Q_OBJECT
 
@@ -24,7 +24,7 @@ public:
         ScreenOrientationAuto
     };
 
-    explicit QtQuick1ApplicationViewer(QWidget *parent = 0);
+    explicit QtQuick1ApplicationViewer(QWindow *parent = 0);
     virtual ~QtQuick1ApplicationViewer();
 
     static QtQuick1ApplicationViewer *create();

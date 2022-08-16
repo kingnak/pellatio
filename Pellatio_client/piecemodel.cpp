@@ -3,13 +3,6 @@
 PieceModel::PieceModel(QObject *parent) :
     QAbstractListModel(parent)
 {
-    QHash<int, QByteArray> roles;
-    roles[typeRole] = "type";
-    roles[colorRole] = "pieceColor";
-    roles[directionRole] = "direction";
-    roles[fieldRole] = "field";
-    roles[captureRole] = "isCaptured";
-    setRoleNames(roles);
 }
 
 int PieceModel::rowCount(const QModelIndex &index) const
@@ -65,13 +58,25 @@ void PieceModel::updateSinglePieceCapture(QString id, bool captured)
 
 void PieceModel::updateData(QList<PieceData> data)
 {
+    beginResetModel();
     m_data.clear();
     foreach (PieceData p, data) {
         m_data << p;
     }
 
     //m_data = data;
-    reset();
+    endResetModel();
+}
+
+QHash<int, QByteArray> PieceModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[typeRole] = "type";
+    roles[colorRole] = "pieceColor";
+    roles[directionRole] = "direction";
+    roles[fieldRole] = "field";
+    roles[captureRole] = "isCaptured";
+    return roles;
 }
 
 int PieceModel::findPiece(QString id)

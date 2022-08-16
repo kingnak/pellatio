@@ -26,6 +26,8 @@ public:
 
     void updateData(QList<FieldData> fields);
 
+    QHash<int, QByteArray> roleNames() const;
+
 public slots:
     void select(int idx);
 
